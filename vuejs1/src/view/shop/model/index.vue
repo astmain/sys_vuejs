@@ -3,7 +3,7 @@
 
   <main style="display: flex; gap: 10px">
     <!-- 商品 -->
-    <Zoom_product  ref="Zoom_product"></Zoom_product>
+    <Zoom_product ref="Zoom_product"></Zoom_product>
 
     <!-- 购物车 -->
     <Zoom_cart ref="Zoom_cart"></Zoom_cart>
@@ -24,15 +24,10 @@ import Zoom_cart from './Zoom_cart.vue'
 import Zoom_order from './Zoom_order.vue'
 
 export default {
-
-
-  
   setup() {
     const route = useRoute()
     const instance = getCurrentInstance()
-    
 
-    
     return {
       route,
     }

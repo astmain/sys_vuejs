@@ -314,10 +314,6 @@
           <h4>是否未塌陷</h4>
           <el-switch v-model="form_save.is_no_collapse"></el-switch>
         </li>
-        <li class="css_form">
-          <h4>是否没有塌陷</h4>
-          <el-switch v-model="form_save.is_no_collapse"></el-switch>
-        </li>
       </nav>
 
       <el-button size="small" @click="save_model_product()" type="primary"> save_model_product </el-button>
