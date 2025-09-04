@@ -2,21 +2,20 @@
   <nav style="border: 1px solid #000">
     <!-- 工具栏 -->
     <el-button size="small" @click="find_list_model_card()" type="primary"> find_list_model_card111 </el-button>
-    <!-- <el-button size="small" @click="create_model_order()" type="primary"> create_model_order </el-button> -->
+    <el-button size="small" @click="create_model_order()" type="primary"> create_model_order </el-button>
 
     <!-- 列表 -->
-    <ul>
+    <ul style="max-height: 500px; overflow-y: auto; padding-right: 10px">
       <li v-for="(item, index) in list_model_card" :key="item.id">
         <el-card shadow="hover" style="width: 400px">
+          <div>index:{{ index }}</div>
           <div>购车车id:{{ item.id }}</div>
-
           <div>购车车创建时间:{{ item.created_at }}</div>
           <div>商品标题:{{ item.product.title }}</div>
           <div>商品id:{{ item.product.id }}</div>
           <div>商品价格类型:{{ item.price_type }}</div>
           <div>商品价格:{{ item.product[item.price_type] }}</div>
-          <!-- <el-button size="small" @click="delete_model_card(item.id)" type="primary"> delete_model_card </el-button> -->
-          <!-- <el-button size="small" @click=";(BUS.STORE.show_cart_json_modal = true), (BUS.STORE.selected_cart_json = item)" type="primary"> selected_cart_json </el-button> -->
+          <el-button size="small" @click="delete_model_card(item.id)" type="info"> delete_model_card </el-button>
         </el-card>
       </li>
     </ul>
@@ -47,8 +46,22 @@ async function find_list_model_card() {
   }
 }
 
+BUS.model.find_list_model_card = find_list_model_card //全局方法暴露
+async function delete_model_card(id: number) {
+  const res: any = await axios_api.get(`/delete_model_card?id=${id}`)
+  console.log('delete_model_card---res:', res)
+  if (res.code === 200) {
+    ElMessage.success(res.msg)
+    find_list_model_card()
+  } else {
+    ElMessage.error(res.msg)
+  }
+}
 
-BUS.model.find_list_model_card = find_list_model_card
+async function create_model_order() {
+  const res: any = await axios_api.post('/create_model_order')
+  console.log('create_model_order---res:', res)
+}
 
 onMounted(() => {
   find_list_model_card()

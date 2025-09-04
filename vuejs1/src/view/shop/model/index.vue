@@ -1,6 +1,6 @@
 <template>
   <h3 style="padding: 0; margin: 0">路由:{{ route.name }}</h3>
-  <h3 style="padding: 0; margin: 0">用户ID:{{ BUS.STORE.user_id }}</h3>
+  <h3 style="padding: 0; margin: 0">用户ID:{{ BUS.model.user_id }}</h3>
 
   <main style="display: flex; gap: 10px">
     <!-- 商品 -->
@@ -25,7 +25,7 @@ import Zoom_order from './Zoom_order.vue'
 export default {
   setup() {
     const route = useRoute()
-    const instance = getCurrentInstance()
+
     return {
       route,
     }
