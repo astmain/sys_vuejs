@@ -3,6 +3,9 @@
     <!-- 商品 -->
     <nav style="border: 1px solid #000">
       <!-- 工具栏 -->
+      <el-button size="small" @click="get_tree_model_kind()" type="info"> get_tree_model_kind </el-button>
+      <el-cascader v-model="tree_id_list" :options="tree_model_kind" :props="cascader_props" placeholder="请选择分类" clearable multiple style="width: 100%"></el-cascader>
+
       <el-button size="small" @click="find_list_model_product()" type="primary"> find_list_model_product </el-button>
       <el-button size="small" @click="show_save_model_product = true" type="success"> save_model_product </el-button>
 
@@ -17,6 +20,7 @@
                 <span>title:{{ item.title }}</span>
                 <span>id:{{ item.id }}</span>
                 <span>created_at:{{ item.created_at }}</span>
+                <span>tb_model_kind:{{ item.tb_model_kind.map((o: any) => o.id + o.name) }}</span>
               </div>
             </nav>
             <el-button size="small" @click=";(show_save_model_product = true), (BUS.model.selected_model_product = item)" type="success"> show_save_model_product </el-button>
@@ -79,7 +83,8 @@
           </li>
           <li class="css_form">
             <h4>种类</h4>
-            <el-input v-model="form_save.kind_ids"></el-input>
+            <!-- <el-input v-model="form_save.kind_ids"></el-input> -->
+            <el-cascader v-model="form_save.kind_ids" :options="tree_model_kind" :props="cascader_props" placeholder="请选择分类" clearable multiple style="width: 100%"></el-cascader>
           </li>
           <li class="css_form">
             <h4>是否公开</h4>
@@ -126,9 +131,21 @@ import { onMounted } from 'vue'
 import { BUS } from '@/BUS'
 import { ElMessage } from 'element-plus'
 import { axios_api } from '@/config/axios_instance'
+import _ from 'lodash'
 
 // 响应式数据使用 $ref
 let show_save_model_product = $ref<boolean>(false)
+
+// 分类数据
+let tree_model_kind = $ref<any>([])
+let tree_id_list = $ref([] as any)
+let cascader_props = $ref({
+  value: 'id',
+  label: 'name',
+  children: 'children',
+  multiple: true,
+  checkStrictly: true,
+})
 
 // 表单数据
 const form_find = $ref({
@@ -151,7 +168,7 @@ const form_find = $ref({
   is_no_collapse: null,
   wiring: '',
   area_unit: '',
-  kind_ids: [],
+  kind_ids: [] as number[],
 })
 
 const form_save = $ref({
@@ -182,6 +199,15 @@ const form_save = $ref({
 
 // 方法
 const find_list_model_product = async () => {
+  let aaa = tree_id_list
+  console.log('tree_id_list', JSON.parse(JSON.stringify(aaa)))
+  let arr_number = _.flattenDeep(tree_id_list)
+  console.log(`111---arr_number:`, arr_number)
+
+  form_find.kind_ids = arr_number as []
+  // form_find.kind_ids = [1]
+
+  // debugger
   const res: any = await axios_api.post('/find_list_model_product', form_find)
   console.log('find_list_model_product---res:', res)
   if (res.code === 200) {
@@ -193,6 +219,12 @@ const find_list_model_product = async () => {
 }
 
 const save_model_product = async () => {
+  let arr_number = _.flattenDeep(form_save.kind_ids)
+
+  console.log(`111---arr_number:`, arr_number)
+
+  // form_save.kind_ids = arr_number
+  form_save.kind_ids = ["arr_number"] 
   const res: any = await axios_api.post('/save_model_product', form_save)
   console.log('save_model_product---res:', res)
   if (res.code === 200) {
@@ -236,9 +268,22 @@ const delete_model_product = async (id: number) => {
   }
 }
 
+async function get_tree_model_kind() {
+  const res: any = await axios_api.get(`/get_tree_model_kind`)
+  console.log('get_tree_model_kind---res:', res)
+
+  if (res.code === 200) {
+    ElMessage.success(res.msg)
+    tree_model_kind = res.result
+  } else {
+    ElMessage.error(res.msg)
+  }
+}
+
 // 生命周期
-onMounted(() => {
-  find_list_model_product()
+onMounted(async () => {
+  await get_tree_model_kind()
+  await find_list_model_product()
 })
 </script>
 

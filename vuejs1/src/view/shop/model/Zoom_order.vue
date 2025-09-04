@@ -10,7 +10,7 @@
           <div>price_pay:{{ item.price_pay }}</div>
           <div>status:{{ item.status }}</div>
           <el-button size="small" @click=";(BUS.model.show_order_detail_modal = true), (BUS.model.selected_order = item)" type="primary"> show_order_detail_modal </el-button>
-          <el-button size="small" @click="delete_model_order(item.order_number)" type="primary"> delete_model_order </el-button>
+          <el-button size="small" @click="delete_model_order(item.order_number)" type="info"> delete_model_order </el-button>
         </el-card>
       </li>
     </ul>
@@ -79,7 +79,6 @@ export default {
     this.find_list_model_order()
 
     BUS.model.find_list_model_order = this.find_list_model_order
-
   },
 }
 </script>
