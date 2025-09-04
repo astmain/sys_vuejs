@@ -65,6 +65,11 @@ declare global {
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']
   const watchSyncEffect: typeof import('vue')['watchSyncEffect']
+  //配置响应$ref语法 Vue Macros reactivity transform
+  const $ref: <T>(value: T) => T
+  const $computed: <T>(fn: () => T) => T
+  const $shallowRef: <T>(value: T) => T
+  const $toRef: <T>(value: T, key: string) => T
 }
 // for type re-export
 declare global {

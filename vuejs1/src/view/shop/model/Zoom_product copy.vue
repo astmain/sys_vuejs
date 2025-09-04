@@ -120,136 +120,136 @@
     </nav>
   </main>
 </template>
-
-<script setup lang="ts">
+<script lang="ts">
 import { useRoute } from 'vue-router'
-import { getCurrentInstance, onMounted } from 'vue'
+import { ref, getCurrentInstance } from 'vue'
 import { BUS } from '@/BUS'
 import { ElMessage } from 'element-plus'
 import { axios_api } from '@/config/axios_instance'
 
-// 响应式数据使用 $ref
-let show_save_model_product = $ref(false)
+export default {
+  data() {
+    return {
+      BUS: BUS,
+      show_save_model_product: false as boolean,
 
-// 表单数据
-const form_find = $ref({
-  // 分页字段
-  page_index: 1,
-  page_size: 10,
+      // 表单
+      form_find: {
+        // 分页字段
+        page_index: 1,
+        page_size: 10,
 
-  // 模糊搜索字段
-  is_check: null,
-  order_by: 'count_collect',
-  order_type: 'desc',
-  title: '',
-  remark: '',
-  is_public: null,
-  is_deleted: false,
-  is_business: null,
-  is_skeleton: null,
-  is_animation: null,
-  is_print: null,
-  is_no_collapse: null,
-  wiring: '',
-  area_unit: '',
-  kind_ids: [],
-})
+        // 模糊搜索字段
+        is_check: null,
+        order_by: 'count_collect',
+        order_type: 'desc',
+        title: '',
+        remark: '',
+        is_public: null,
+        is_deleted: false,
+        is_business: null,
+        is_skeleton: null,
+        is_animation: null,
+        is_print: null,
+        is_no_collapse: null,
+        wiring: '',
+        area_unit: '',
+        kind_ids: [],
+      },
 
-const form_save = $ref({
-  kind_ids: [], //种类
-  title: '标题', //标题
-  remark: '描述', //描述
-  is_public: true, //是否公开
-  is_deleted: false, //是否删除
-  is_business: true, //是否商用
-  is_skeleton: true, //是否骨骼
-  is_animation: true, //是否动画
-  is_print: true, //是否打印
-  is_no_collapse: true, //是否未塌陷
-  model_format: '.stl', //模型格式
+      form_save: {
+        kind_ids: [], //种类
+        title: '标题', //标题
+        remark: '描述', //描述
+        is_public: true, //是否公开
+        is_deleted: false, //是否删除
+        is_business: true, //是否商用
+        is_skeleton: true, //是否骨骼
+        is_animation: true, //是否动画
+        is_print: true, //是否打印
+        is_no_collapse: true, //是否未塌陷
+        model_format: '.stl', //模型格式
 
-  wiring: '', //布线
-  area_unit: '', //面积单位
-  price_personal: 111, //个人价格
-  price_company: 1111, //企业价格
-  price_extend: 11111, //企业扩展价格
+        wiring: '', //布线
+        area_unit: '', //面积单位
+        price_personal: 111, //个人价格
+        price_company: 1111, //企业价格
+        price_extend: 11111, //企业扩展价格
 
-  list_img: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //图片
-  list_file: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //文件
-  list_video: [], //视频
-  list_extend: [], //扩展
-  list_texture: [], //纹理
-})
+        list_img: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //图片
+        list_file: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //文件
+        list_video: [], //视频
+        list_extend: [], //扩展
+        list_texture: [], //纹理
+      },
+    }
+  }, ////
+  methods: {
+    async find_list_model_product() {
+      const res: any = await axios_api.post('/find_list_model_product', this.form_find)
+      console.log('find_list_model_product---res:', res)
+      if (res.code === 200) {
+        BUS.STORE.list_model_product = res.result.list
+        ElMessage.success(res.msg)
+      } else {
+        ElMessage.error(res.msg)
+      }
+    },
 
-// 方法
-const find_list_model_product = async () => {
-  const res: any = await axios_api.post('/find_list_model_product', form_find)
-  console.log('find_list_model_product---res:', res)
-  if (res.code === 200) {
-    BUS.STORE.list_model_product = res.result.list
-    ElMessage.success(res.msg)
-  } else {
-    ElMessage.error(res.msg)
-  }
+    async save_model_product() {
+      const res: any = await axios_api.post('/save_model_product', this.form_save)
+      console.log('save_model_product---res:', res)
+      if (res.code === 200) {
+        ElMessage.success(res.msg)
+        this.find_list_model_product()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    },
+
+    async save_model_card() {
+      const form = {
+        user_id: BUS.STORE.user_id,
+        product_id: BUS.STORE.selected_model_product.id,
+        price_type: 'price_personal',
+      }
+
+      const res: any = await axios_api.post('/save_model_card', form)
+      console.log('save_model_card---res:', res)
+      if (res.code === 200) {
+        ElMessage.success(res.msg)
+        console.log('this.$parent?.$refs.Zoom_cart:', this.$parent?.$refs.Zoom_cart)
+        ;(this.$parent?.$refs.Zoom_cart as any)?.find_list_model_card()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    },
+
+    async delete_model_product(id: number) {
+      const res: any = await axios_api.get(`/delete_model_product?id=${id}`)
+      console.log('delete_model_product---res:', res)
+      if (res.code === 200) {
+        ElMessage.success(res.msg)
+        this.find_list_model_product()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    },
+
+    async create_order_from_cart() {
+      let form = { user_id: BUS.STORE.user_id, price_sub: 0 }
+      const res: any = await axios_api.post('/create_order_from_cart', form)
+      console.log('create_order_from_cart---res:', res)
+      if (res.code === 200) {
+        ElMessage.success(res.msg)
+      } else {
+        ElMessage.error(res.msg)
+      }
+    },
+  }, ////
+  async mounted() {
+    this.find_list_model_product()
+  },
 }
-
-const save_model_product = async () => {
-  const res: any = await axios_api.post('/save_model_product', form_save)
-  console.log('save_model_product---res:', res)
-  if (res.code === 200) {
-    ElMessage.success(res.msg)
-    find_list_model_product()
-  } else {
-    ElMessage.error(res.msg)
-  }
-}
-
-const save_model_card = async () => {
-  const form = {
-    user_id: BUS.STORE.user_id,
-    product_id: BUS.STORE.selected_model_product.id,
-    price_type: 'price_personal',
-  }
-
-  const res: any = await axios_api.post('/save_model_card', form)
-  console.log('save_model_card---res:', res)
-  if (res.code === 200) {
-    ElMessage.success(res.msg)
-    const instance = getCurrentInstance()
-    console.log('instance?.parent?.refs.Zoom_cart:', instance?.parent?.refs.Zoom_cart)
-    ;(instance?.parent?.refs.Zoom_cart as any)?.find_list_model_card()
-  } else {
-    ElMessage.error(res.msg)
-  }
-}
-
-const delete_model_product = async (id: number) => {
-  console.log('delete_model_product---id:', id)
-  const res: any = await axios_api.get(`/delete_model_product?id=${id}`)
-  console.log('delete_model_product---res:', res)
-  if (res.code === 200) {
-    ElMessage.success(res.msg)
-    find_list_model_product()
-  } else {
-    ElMessage.error(res.msg)
-  }
-}
-
-const create_order_from_cart = async () => {
-  let form = { user_id: BUS.STORE.user_id, price_sub: 0 }
-  const res: any = await axios_api.post('/create_order_from_cart', form)
-  console.log('create_order_from_cart---res:', res)
-  if (res.code === 200) {
-    ElMessage.success(res.msg)
-  } else {
-    ElMessage.error(res.msg)
-  }
-}
-
-// 生命周期
-onMounted(() => {
-  find_list_model_product()
-})
 </script>
-
 <style scoped></style>
