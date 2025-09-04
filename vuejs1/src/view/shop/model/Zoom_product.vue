@@ -223,8 +223,8 @@ const save_model_product = async () => {
 
   console.log(`111---arr_number:`, arr_number)
 
-  // form_save.kind_ids = arr_number
-  form_save.kind_ids = ["arr_number"] 
+  form_save.kind_ids = arr_number
+  // form_save.kind_ids = ["arr_number"] 
   const res: any = await axios_api.post('/save_model_product', form_save)
   console.log('save_model_product---res:', res)
   if (res.code === 200) {
