@@ -3,16 +3,16 @@
       <nav style="border: 1px solid #000">
       <el-button size="small" @click="find_list_model_order()" type="primary"> find_list_model_order </el-button>
       <ul>
-        <li v-for="(item, index) in BUS.STORE.list_model_order" :key="item.id">
+        <li v-for="(item, index) in BUS.model.list_model_order" :key="item.id">
           <el-card shadow="hover" style="width: 400px">
             <div>{{ item.id }}</div>
-            <el-button size="small" @click=";(BUS.STORE.show_order_detail_modal = true), (BUS.STORE.selected_order = item)" type="primary"> show_order_detail_modal </el-button>
+            <el-button size="small" @click=";(BUS.model.show_order_detail_modal = true), (BUS.model.selected_order = item)" type="primary"> show_order_detail_modal </el-button>
           </el-card>
         </li>
       </ul>
 
-      <el-dialog title="show_order_detail_modal" v-model="BUS.STORE.show_order_detail_modal" width="500px" :close-on-click-modal="false">
-        <el-input :value="JSON.stringify(BUS.STORE.selected_order, null, 2)" type="textarea" :rows="20" readonly></el-input>
+      <el-dialog title="show_order_detail_modal" v-model="BUS.model.show_order_detail_modal" width="500px" :close-on-click-modal="false">
+        <el-input :value="JSON.stringify(BUS.model.selected_order, null, 2)" type="textarea" :rows="20" readonly></el-input>
       </el-dialog>
     </nav>
 </template>
@@ -47,7 +47,7 @@ export default {
 
     async find_list_model_order() {
       let form = {
-        user_id: BUS.STORE.user_id, //
+        user_id: BUS.model.user_id, //
         order_number: '',
         status: '',
         page_index: 1,
@@ -60,7 +60,7 @@ export default {
       console.log('find_list_model_order---res:', res)
       if (res.code === 200) {
         ElMessage.success(res.msg)
-        BUS.STORE.list_model_order = res.result.list
+        BUS.model.list_model_order = res.result.list
         // window.list_model_order = this.list_model_order
       } else {
         ElMessage.error(res.msg)

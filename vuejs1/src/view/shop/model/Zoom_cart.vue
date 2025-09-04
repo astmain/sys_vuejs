@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted, provide } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { BUS } from '@/BUS'
@@ -33,13 +33,9 @@ import { axios_api } from '@/config/axios_instance'
 // 数据=======================================
 let list_model_card = $ref([] as any[])
 
-onMounted(() => {
-  find_list_model_card()
-})
-
 // 方法=======================================
 async function find_list_model_card() {
-  const form = { user_id: BUS.STORE.user_id, page_index: 1, page_size: 10, order_by: 'created_at', order_type: 'desc' }
+  const form = { user_id: BUS.model.user_id, page_index: 1, page_size: 10, order_by: 'created_at', order_type: 'desc' }
 
   const res: any = await axios_api.post('/find_list_model_card', form)
   console.log('find_list_model_card---res:', res)
@@ -50,6 +46,13 @@ async function find_list_model_card() {
     ElMessage.error(res.msg)
   }
 }
+
+
+BUS.model.find_list_model_card = find_list_model_card
+
+onMounted(() => {
+  find_list_model_card()
+})
 </script>
 
 <style scoped></style>

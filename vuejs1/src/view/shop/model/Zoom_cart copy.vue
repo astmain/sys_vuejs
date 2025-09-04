@@ -48,7 +48,7 @@ export default {
   methods: {
     async find_list_model_card() {
       const form = {
-        user_id: BUS.STORE.user_id,
+        user_id: BUS.model.user_id,
         page_index: 1,
         page_size: 10,
         order_by: 'created_at',

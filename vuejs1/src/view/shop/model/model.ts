@@ -1,4 +1,7 @@
-export function STORE2() {
+import { ElMessage } from 'element-plus'
+import { axios_api } from '@/config/axios_instance'
+
+export function model() {
   // 用户
   const user_id = 1
 
@@ -51,6 +54,9 @@ export function STORE2() {
     }
   }
 
+  // 全局方法=======================================
+  let find_list_model_card: any = null
+
   return {
     user_id: 1,
     list_model_product,
@@ -63,5 +69,6 @@ export function STORE2() {
     show_cart_json_modal,
     selected_cart_json,
     find_list_model_product,
+    find_list_model_card,
   }
 }

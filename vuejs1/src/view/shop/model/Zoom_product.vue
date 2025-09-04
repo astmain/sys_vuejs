@@ -8,8 +8,8 @@
 
       <!-- 商品列表 -->
       <ul style="max-height: 500px; overflow-y: auto; padding-right: 10px">
-        <li v-for="(item, index) in BUS.STORE.list_model_product" :key="item.id">
-          <el-card shadow="hover" style="width: 400px" @click="BUS.STORE.selected_model_product = item">
+        <li v-for="(item, index) in BUS.model.list_model_product" :key="item.id">
+          <el-card shadow="hover" style="width: 400px" @click="BUS.model.selected_model_product = item">
             <nav style="display: flex; gap: 10px">
               <img :src="item.list_img.length > 0 ? item.list_img[0].url : ''" style="width: 100px; height: 100px" />
               <div style="display: flex; flex-direction: column; gap: 5px">
@@ -19,9 +19,9 @@
                 <span>created_at:{{ item.created_at }}</span>
               </div>
             </nav>
-            <el-button size="small" @click=";(show_save_model_product = true), (BUS.STORE.selected_model_product = item)" type="success"> show_save_model_product </el-button>
+            <el-button size="small" @click=";(show_save_model_product = true), (BUS.model.selected_model_product = item)" type="success"> show_save_model_product </el-button>
             <el-button size="small" @click="save_model_card()" type="primary" plain> save_model_card </el-button>
-            <el-button size="small" @click="delete_model_product(BUS.STORE.selected_model_product.id)" type="info"> delete_model_product </el-button>
+            <el-button size="small" @click="delete_model_product(BUS.model.selected_model_product.id)" type="info"> delete_model_product </el-button>
           </el-card>
         </li>
       </ul>
@@ -127,9 +127,10 @@ import { getCurrentInstance, onMounted } from 'vue'
 import { BUS } from '@/BUS'
 import { ElMessage } from 'element-plus'
 import { axios_api } from '@/config/axios_instance'
-
+import { inject } from 'vue'
 // 响应式数据使用 $ref
-let show_save_model_product = $ref(false)
+let show_save_model_product = $ref<boolean>(false)
+const instance = getCurrentInstance()
 
 // 表单数据
 const form_find = $ref({
@@ -186,7 +187,7 @@ const find_list_model_product = async () => {
   const res: any = await axios_api.post('/find_list_model_product', form_find)
   console.log('find_list_model_product---res:', res)
   if (res.code === 200) {
-    BUS.STORE.list_model_product = res.result.list
+    BUS.model.list_model_product = res.result.list
     ElMessage.success(res.msg)
   } else {
     ElMessage.error(res.msg)
@@ -206,8 +207,8 @@ const save_model_product = async () => {
 
 const save_model_card = async () => {
   const form = {
-    user_id: BUS.STORE.user_id,
-    product_id: BUS.STORE.selected_model_product.id,
+    user_id: BUS.model.user_id,
+    product_id: BUS.model.selected_model_product.id,
     price_type: 'price_personal',
   }
 
@@ -215,9 +216,10 @@ const save_model_card = async () => {
   console.log('save_model_card---res:', res)
   if (res.code === 200) {
     ElMessage.success(res.msg)
-    const instance = getCurrentInstance()
-    console.log('instance?.parent?.refs.Zoom_cart:', instance?.parent?.refs.Zoom_cart)
-    ;(instance?.parent?.refs.Zoom_cart as any)?.find_list_model_card()
+    // const instance = getCurrentInstance()
+    // console.log('instance?.parent?.refs.Zoom_cart:', instance?.parent?.refs.Zoom_cart)
+    // ;(instance?.parent?.refs.Zoom_cart as any)?.find_list_model_card()
+    BUS.model.find_list_model_card()
   } else {
     ElMessage.error(res.msg)
   }
@@ -230,17 +232,6 @@ const delete_model_product = async (id: number) => {
   if (res.code === 200) {
     ElMessage.success(res.msg)
     find_list_model_product()
-  } else {
-    ElMessage.error(res.msg)
-  }
-}
-
-const create_order_from_cart = async () => {
-  let form = { user_id: BUS.STORE.user_id, price_sub: 0 }
-  const res: any = await axios_api.post('/create_order_from_cart', form)
-  console.log('create_order_from_cart---res:', res)
-  if (res.code === 200) {
-    ElMessage.success(res.msg)
   } else {
     ElMessage.error(res.msg)
   }
