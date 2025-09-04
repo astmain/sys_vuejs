@@ -26,9 +26,9 @@
     </ul>
 
     <!-- 显示选中的ID列表 -->
-    <div v-if="list_select.length > 0" style="margin-top: 10px; padding: 10px; background-color: #f5f5f5">
+    <div v-if="cart_id_list_select.length > 0" style="margin-top: 10px; padding: 10px; background-color: #f5f5f5">
       <strong>已选中的商品ID：</strong>
-      <span v-for="(item, index) in list_select" :key="item.cart_id"> {{ item.cart_id }}{{ index < list_select.length - 1 ? ', ' : '' }} </span>
+      <span v-for="(item, index) in cart_id_list_select" :key="item"> {{ item }}{{ index < cart_id_list_select.length - 1 ? ', ' : '' }} </span>
     </div>
   </nav>
 </template>
@@ -40,33 +40,27 @@ import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { BUS } from '@/BUS'
 import { axios_api } from '@/config/axios_instance'
 
-// 类型定义
-interface SelectedProduct {
-  price_type: string
-  cart_id: number
-}
-
 // 数据=======================================
 let list_model_card = $ref([] as any[])
-let list_select = $ref([] as SelectedProduct[]) //选中列表 只能放置 {product_id}
+let cart_id_list_select = $ref([] as string[]) //选中的购物车id列表
 
 // 方法=======================================
 // 处理选中状态变化
 function handleSelectionChange(item: any) {
   if (item.selected) {
     // 添加到选中列表
-    const exists = list_select.some((selected) => selected.cart_id === item.id)
+    const exists = cart_id_list_select.some((selected) => selected === item.id)
     if (!exists) {
-      list_select.push({ price_type: item.price_type, cart_id: item.id })
+      cart_id_list_select.push(item.id)
     }
   } else {
     // 从选中列表移除
-    const index = list_select.findIndex((selected) => selected.cart_id === item.id)
+    const index = cart_id_list_select.findIndex((selected) => selected === item.id)
     if (index > -1) {
-      list_select.splice(index, 1)
+      cart_id_list_select.splice(index, 1)
     }
   }
-  console.log('当前选中的商品ID:', list_select)
+  console.log('当前选中的商品ID:', cart_id_list_select)
 }
 
 async function find_list_model_card() {
@@ -99,8 +93,14 @@ async function delete_model_card(id: number) {
 }
 
 async function create_model_order() {
-  const res: any = await axios_api.post('/create_model_order')
+  const res: any = await axios_api.post('/create_model_order', { cart_id_list_select, user_id: BUS.model.user_id })
   console.log('create_model_order---res:', res)
+  if (res.code === 200) {
+    ElMessage.success(res.msg)
+    BUS.model.find_list_model_order()
+  } else {
+    ElMessage.error(res.msg)
+  }
 }
 
 onMounted(() => {

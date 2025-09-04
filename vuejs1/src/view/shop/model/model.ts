@@ -56,6 +56,7 @@ export function model() {
 
   // 全局方法=======================================
   let find_list_model_card: any = null
+  let find_list_model_order: any = null
 
   return {
     user_id: 1,
@@ -69,6 +70,7 @@ export function model() {
     show_cart_json_modal,
     selected_cart_json,
     find_list_model_product,
+    find_list_model_order,
     find_list_model_card,
   }
 }

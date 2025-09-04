@@ -21,7 +21,9 @@
 </template>
 
 <script setup lang="ts">
-console.log('axios_api', axios_api)
+import {ref }  from "vue"
+import { axios_api } from '@/config/axios_instance'
+ console.log('axios_api', axios_api)
 
 
 

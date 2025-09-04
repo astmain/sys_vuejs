@@ -32,7 +32,9 @@ axios_instance.interceptors.response.use(
   (error) => {
     // 可统一处理错误
     // alert(error.message)
-    return Promise.reject(error)
+    // console.log(error.response)
+    // return Promise.reject(error)
+    return error.response.data
   }
 )
 

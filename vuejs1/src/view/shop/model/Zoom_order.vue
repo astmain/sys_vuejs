@@ -1,20 +1,24 @@
 <template>
-      <!-- 订单 -->
-      <nav style="border: 1px solid #000">
-      <el-button size="small" @click="find_list_model_order()" type="primary"> find_list_model_order </el-button>
-      <ul>
-        <li v-for="(item, index) in BUS.model.list_model_order" :key="item.id">
-          <el-card shadow="hover" style="width: 400px">
-            <div>{{ item.id }}</div>
-            <el-button size="small" @click=";(BUS.model.show_order_detail_modal = true), (BUS.model.selected_order = item)" type="primary"> show_order_detail_modal </el-button>
-          </el-card>
-        </li>
-      </ul>
+  <!-- 订单 -->
+  <nav style="border: 1px solid #000">
+    <el-button size="small" @click="find_list_model_order()" type="primary"> find_list_model_order </el-button>
+    <ul>
+      <li v-for="(item, index) in BUS.model.list_model_order" :key="item.id">
+        <el-card shadow="hover" style="width: 400px">
+          <div>order_number:{{ item.order_number }}</div>
+          <div>price_order:{{ item.price_order }}</div>
+          <div>price_pay:{{ item.price_pay }}</div>
+          <div>status:{{ item.status }}</div>
+          <el-button size="small" @click=";(BUS.model.show_order_detail_modal = true), (BUS.model.selected_order = item)" type="primary"> show_order_detail_modal </el-button>
+          <el-button size="small" @click="delete_model_order(item.order_number)" type="primary"> delete_model_order </el-button>
+        </el-card>
+      </li>
+    </ul>
 
-      <el-dialog title="show_order_detail_modal" v-model="BUS.model.show_order_detail_modal" width="500px" :close-on-click-modal="false">
-        <el-input :value="JSON.stringify(BUS.model.selected_order, null, 2)" type="textarea" :rows="20" readonly></el-input>
-      </el-dialog>
-    </nav>
+    <el-dialog title="show_order_detail_modal" v-model="BUS.model.show_order_detail_modal" width="500px" :close-on-click-modal="false">
+      <el-input :value="JSON.stringify(BUS.model.selected_order, null, 2)" type="textarea" :rows="20" readonly></el-input>
+    </el-dialog>
+  </nav>
 </template>
 <script lang="ts">
 import { useRoute } from 'vue-router'
@@ -36,15 +40,8 @@ export default {
     }
   }, ////
 
-
-  computed: {
-
-
-
-    
-  },
+  computed: {},
   methods: {
-
     async find_list_model_order() {
       let form = {
         user_id: BUS.model.user_id, //
@@ -66,9 +63,23 @@ export default {
         ElMessage.error(res.msg)
       }
     },
+
+    async delete_model_order(order_number: string) {
+      const res: any = await axios_api.get(`/delete_model_order?order_number=${order_number}`)
+      console.log('delete_model_order---res:', res)
+      if (res.code === 200) {
+        ElMessage.success(res.msg)
+        this.find_list_model_order()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    },
   }, ////
   async mounted() {
     this.find_list_model_order()
+
+    BUS.model.find_list_model_order = this.find_list_model_order
+
   },
 }
 </script>

@@ -22,6 +22,9 @@
 
 <script setup lang="ts">
 import { BUS } from '@/BUS'
+import { ref } from 'vue'
+import { axios_api } from '@/config/axios_instance'
+
 function BUS_count_add() {
   BUS.count++
   console.log('increment_count---BUS.count', BUS.count)

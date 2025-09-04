@@ -122,15 +122,13 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { getCurrentInstance, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { BUS } from '@/BUS'
 import { ElMessage } from 'element-plus'
 import { axios_api } from '@/config/axios_instance'
-import { inject } from 'vue'
+
 // 响应式数据使用 $ref
 let show_save_model_product = $ref<boolean>(false)
-const instance = getCurrentInstance()
 
 // 表单数据
 const form_find = $ref({
@@ -141,7 +139,7 @@ const form_find = $ref({
   // 模糊搜索字段
   is_check: null,
   order_by: 'count_collect',
-  order_type: 'desc',
+  order_type: 'asc',
   title: '',
   remark: '',
   is_public: null,
@@ -210,6 +208,7 @@ const save_model_card = async () => {
     user_id: BUS.model.user_id,
     product_id: BUS.model.selected_model_product.id,
     price_type: 'price_personal',
+    count: 1,
   }
 
   const res: any = await axios_api.post('/save_model_card', form)
