@@ -9,6 +9,7 @@
         <li v-for="(item, index) in BUS.STORE.list_model_product" :key="item.id">
           <el-card shadow="hover" style="width: 400px" @click="BUS.STORE.selected_model_product = item">
             <nav style="display: flex; gap: 10px">
+              {{ index }}
               <img :src="item.list_img.length > 0 ? item.list_img[0].url : ''" style="width: 100px; height: 100px" />
               <div>
                 <div class="css_form" style="width: 200px">
@@ -331,12 +332,6 @@ import { ElMessage } from 'element-plus'
 import { axios_api } from '@/config/axios_instance'
 
 export default {
-  setup() {
-    const route = useRoute()
-    return {
-      route,
-    }
-  },
   data() {
     return {
       BUS: BUS,
@@ -416,6 +411,7 @@ export default {
       console.log('save_model_product---res:', res)
       if (res.code === 200) {
         ElMessage.success(res.msg)
+        this.find_list_model_product()
       } else {
         ElMessage.error(res.msg)
       }
@@ -433,7 +429,7 @@ export default {
       console.log('save_model_card---res:', res)
       if (res.code === 200) {
         ElMessage.success(res.msg)
-        // this.find_list_model_card()
+        ;(this.$parent?.$refs.Zoom_cart as any)?.find_list_model_card()
       } else {
         ElMessage.error(res.msg)
       }

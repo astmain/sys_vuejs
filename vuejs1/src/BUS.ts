@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { STORE } from './view/shop/model/STORE'
+import { STORE2 } from './view/shop/model/STORE2'
 
 // 创建全局pinia实例
 
@@ -11,7 +11,7 @@ export const useBUS = defineStore('BUS_defineStore', {
     VITE_url_app_run: '',
     VITE_url_app_list: [],
     token: '',
-    STORE: STORE,
+    STORE: STORE2(),
   }),
   persist: [
     { pick: ['count', 'web_type', 'VITE_url_app_run', 'VITE_url_app_list', 'token'], storage: localStorage },
