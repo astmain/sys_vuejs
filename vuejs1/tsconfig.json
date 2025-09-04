@@ -15,7 +15,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
     }
@@ -26,6 +26,5 @@
     "src/**/*.tsx",
     "src/auto-imports.d.ts"
   ],
-  "references": [{ "path": "./config_cli/tsconfig.node.json" }],
   "types": ["vite/client"]
 }
