@@ -35,6 +35,14 @@ export default {
       BUS,
     }
   }, ////
+
+
+  computed: {
+
+
+
+    
+  },
   methods: {
 
     async find_list_model_order() {

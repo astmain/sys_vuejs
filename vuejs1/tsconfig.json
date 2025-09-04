@@ -27,5 +27,5 @@
     "src/**/*.vue",
     "src/auto-imports.d.ts"
   ],
-  "types": ["vite/client"]
+  "types": ["vite/client","@vue-macros/reactivity-transform/macros-global"]
 }

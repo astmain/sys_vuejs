@@ -1,5 +1,6 @@
 <template>
   <h3 style="padding: 0; margin: 0">路由:{{ route.name }}</h3>
+  <h3 style="padding: 0; margin: 0">用户ID:{{ BUS.STORE.user_id }}</h3>
 
   <main style="display: flex; gap: 10px">
     <!-- 商品 -->
@@ -14,10 +15,8 @@
 </template>
 <script lang="ts">
 import { useRoute } from 'vue-router'
-import { ref, getCurrentInstance, provide } from 'vue'
+
 import { BUS } from '@/BUS'
-import { ElMessage } from 'element-plus'
-import { axios_api } from '@/config/axios_instance'
 
 import Zoom_product from './Zoom_product.vue'
 import Zoom_cart from './Zoom_cart.vue'
@@ -27,7 +26,6 @@ export default {
   setup() {
     const route = useRoute()
     const instance = getCurrentInstance()
-
     return {
       route,
     }
@@ -38,7 +36,7 @@ export default {
     Zoom_order,
   },
   data() {
-    return {}
+    return { BUS }
   }, ////
   methods: {}, ////
   async mounted() {},

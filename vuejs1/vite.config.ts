@@ -3,6 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import { loadEnv } from 'vite'
 import VueDevTools from 'vite-plugin-vue-devtools'
+
+import ReactivityTransform from '@vue-macros/reactivity-transform/vite'// vue响应式数据$ref
 import UnoCSS from 'unocss/vite'
 import presetIcons from '@unocss/preset-icons'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -25,6 +27,7 @@ export default defineConfig(({ command, mode }) => {
       VueDevTools(), //
       auto_plus.auto_import, //
       auto_plus.auto_Components,
+      ReactivityTransform(),// vue响应式数据$ref
       UnoCSS({
         presets: [
           presetIcons({

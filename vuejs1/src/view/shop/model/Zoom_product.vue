@@ -1,44 +1,45 @@
 <template>
   <main style="display: flex; gap: 10px">
-    <!-- 列表 -->
+    <!-- 商品 -->
     <nav style="border: 1px solid #000">
+      <!-- 工具栏 -->
       <el-button size="small" @click="find_list_model_product()" type="primary"> find_list_model_product </el-button>
-      <el-button size="small" @click="show_add_product_modal = true" type="primary"> show_add_product_modal </el-button>
+      <el-button size="small" @click="show_save_model_product = true" type="success"> save_model_product </el-button>
 
+      <!-- 商品列表 -->
       <ul style="max-height: 500px; overflow-y: auto; padding-right: 10px">
         <li v-for="(item, index) in BUS.STORE.list_model_product" :key="item.id">
           <el-card shadow="hover" style="width: 400px" @click="BUS.STORE.selected_model_product = item">
             <nav style="display: flex; gap: 10px">
-              {{ index }}
               <img :src="item.list_img.length > 0 ? item.list_img[0].url : ''" style="width: 100px; height: 100px" />
-              <div>
-                <div class="css_form" style="width: 200px">
-                  <span>title</span>
-                  <div>{{ item.title }}</div>
-                </div>
+              <div style="display: flex; flex-direction: column; gap: 5px">
+                <span>index:{{ index }}</span>
+                <span>title:{{ item.title }}</span>
+                <span>id:{{ item.id }}</span>
+                <span>created_at:{{ item.created_at }}</span>
               </div>
             </nav>
-            <el-button size="small" @click=";(show_info_modal = true), (BUS.STORE.selected_model_product = item)" type="primary"> show_info_modal </el-button>
-            <el-button size="small" @click="save_model_card()" type="primary"> save_model_card </el-button>
-            <el-button size="small" @click="delete_model_product(BUS.STORE.selected_model_product.id)" type="primary"> delete_model_product </el-button>
+            <el-button size="small" @click=";(show_save_model_product = true), (BUS.STORE.selected_model_product = item)" type="success"> show_save_model_product </el-button>
+            <el-button size="small" @click="save_model_card()" type="primary" plain> save_model_card </el-button>
+            <el-button size="small" @click="delete_model_product(BUS.STORE.selected_model_product.id)" type="info"> delete_model_product </el-button>
           </el-card>
         </li>
       </ul>
 
-      <!-- 详情 -->
-      <el-dialog title="show_info_modal" width="500px" v-model="show_info_modal" :close-on-click-modal="false">
+      <!-- 保存商品 -->
+      <el-dialog title="show_save_model_product" width="500px" v-model="show_save_model_product" :close-on-click-modal="false">
         <nav style="max-height: 500px; overflow-y: auto; padding-right: 10px">
           <li class="css_form">
             <h4>模型标题</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.title"></el-input>
+            <el-input v-model="form_save.title"></el-input>
           </li>
           <li class="css_form">
             <h4>模型格式</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.model_format"></el-input>
+            <el-input v-model="form_save.model_format"></el-input>
           </li>
           <li class="css_form">
             <h4>模型描述</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.remark"></el-input>
+            <el-input v-model="form_save.remark"></el-input>
           </li>
 
           <!-- <li class="css_form">
@@ -53,271 +54,70 @@
 
           <li class="css_form">
             <h4>个人价格</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.price_personal"></el-input>
+            <el-input v-model="form_save.price_personal"></el-input>
           </li>
           <li class="css_form">
             <h4>企业价格</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.price_company"></el-input>
+            <el-input v-model="form_save.price_company"></el-input>
           </li>
           <li class="css_form">
             <h4>企业扩展价格</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.price_extend"></el-input>
+            <el-input v-model="form_save.price_extend"></el-input>
           </li>
           <li class="css_form">
             <h4>模型格式</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.model_format"></el-input>
+            <el-input v-model="form_save.model_format"></el-input>
           </li>
-          <li class="css_form">
-            <h4>收藏数量</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.count_collect"></el-input>
-          </li>
+
           <li class="css_form">
             <h4>布线</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.wiring"></el-input>
+            <el-input v-model="form_save.wiring"></el-input>
           </li>
           <li class="css_form">
             <h4>面积单位</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.area_unit"></el-input>
+            <el-input v-model="form_save.area_unit"></el-input>
           </li>
           <li class="css_form">
             <h4>种类</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.kind_ids"></el-input>
+            <el-input v-model="form_save.kind_ids"></el-input>
           </li>
           <li class="css_form">
             <h4>是否公开</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_public"></el-switch>
+            <el-switch v-model="form_save.is_public"></el-switch>
           </li>
           <li class="css_form">
             <h4>是否删除</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_deleted"></el-switch>
-          </li>
-          <li class="css_form">
-            <h4>是否审核</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_check"></el-switch>
+            <el-switch v-model="form_save.is_deleted"></el-switch>
           </li>
           <li class="css_form">
             <h4>是否商用</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_business"></el-switch>
+            <el-switch v-model="form_save.is_business"></el-switch>
           </li>
           <li class="css_form">
             <h4>是否骨骼</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_skeleton"></el-switch>
+            <el-switch v-model="form_save.is_skeleton"></el-switch>
           </li>
           <li class="css_form">
             <h4>是否动画</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_animation"></el-switch>
+            <el-switch v-model="form_save.is_animation"></el-switch>
           </li>
           <li class="css_form">
             <h4>是否打印</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_print"></el-switch>
+            <el-switch v-model="form_save.is_print"></el-switch>
           </li>
           <li class="css_form">
             <h4>是否未塌陷</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_no_collapse"></el-switch>
+            <el-switch v-model="form_save.is_no_collapse"></el-switch>
           </li>
           <li class="css_form">
             <h4>是否没有塌陷</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_no_collapse"></el-switch>
-          </li>
-        </nav>
-
-        <el-button size="small" @click="save_model_product()" type="primary"> save_model_product </el-button>
-      </el-dialog>
-
-      <!-- 保存 -->
-      <el-dialog title="show_info_modal" width="500px" v-model="show_info_modal" :close-on-click-modal="false">
-        <nav style="max-height: 500px; overflow-y: auto; padding-right: 10px">
-          <li class="css_form">
-            <h4>模型标题</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.title"></el-input>
-          </li>
-          <li class="css_form">
-            <h4>模型格式</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.model_format"></el-input>
-          </li>
-          <li class="css_form">
-            <h4>模型描述</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.remark"></el-input>
-          </li>
-
-          <!-- <li class="css_form">
-          <h4>图片</h4>
-          <el-input v-model="selected_model_product.list_img [0].url"></el-input>
-        </li>
-
-        <li class="css_form">
-          <h4>文件</h4>
-          <el-input v-model="selected_model_product.list_file[0].url"></el-input>
-        </li> -->
-
-          <li class="css_form">
-            <h4>个人价格</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.price_personal"></el-input>
-          </li>
-          <li class="css_form">
-            <h4>企业价格</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.price_company"></el-input>
-          </li>
-          <li class="css_form">
-            <h4>企业扩展价格</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.price_extend"></el-input>
-          </li>
-          <li class="css_form">
-            <h4>模型格式</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.model_format"></el-input>
-          </li>
-          <li class="css_form">
-            <h4>收藏数量</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.count_collect"></el-input>
-          </li>
-          <li class="css_form">
-            <h4>布线</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.wiring"></el-input>
-          </li>
-          <li class="css_form">
-            <h4>面积单位</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.area_unit"></el-input>
-          </li>
-          <li class="css_form">
-            <h4>种类</h4>
-            <el-input v-model="BUS.STORE.selected_model_product.kind_ids"></el-input>
-          </li>
-          <li class="css_form">
-            <h4>是否公开</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_public"></el-switch>
-          </li>
-          <li class="css_form">
-            <h4>是否删除</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_deleted"></el-switch>
-          </li>
-          <li class="css_form">
-            <h4>是否审核</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_check"></el-switch>
-          </li>
-          <li class="css_form">
-            <h4>是否商用</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_business"></el-switch>
-          </li>
-          <li class="css_form">
-            <h4>是否骨骼</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_skeleton"></el-switch>
-          </li>
-          <li class="css_form">
-            <h4>是否动画</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_animation"></el-switch>
-          </li>
-          <li class="css_form">
-            <h4>是否打印</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_print"></el-switch>
-          </li>
-          <li class="css_form">
-            <h4>是否未塌陷</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_no_collapse"></el-switch>
-          </li>
-          <li class="css_form">
-            <h4>是否没有塌陷</h4>
-            <el-switch v-model="BUS.STORE.selected_model_product.is_no_collapse"></el-switch>
+            <el-switch v-model="form_save.is_no_collapse"></el-switch>
           </li>
         </nav>
 
         <el-button size="small" @click="save_model_product()" type="primary"> save_model_product </el-button>
       </el-dialog>
     </nav>
-
-    <!-- 添加3D模型弹窗 -->
-    <el-dialog title="添加3D模型" width="500px" v-model="show_add_product_modal" :close-on-click-modal="false">
-      <nav style="max-height: 500px; overflow-y: auto; padding-right: 10px">
-        <li class="css_form">
-          <h4>模型标题</h4>
-          <el-input v-model="form_save.title"></el-input>
-        </li>
-        <li class="css_form">
-          <h4>模型格式</h4>
-          <el-input v-model="form_save.model_format"></el-input>
-        </li>
-        <li class="css_form">
-          <h4>模型描述</h4>
-          <el-input v-model="form_save.remark"></el-input>
-        </li>
-
-        <li class="css_form">
-          <h4>图片</h4>
-          <el-input v-model="form_save.list_img[0].url"></el-input>
-        </li>
-
-        <li class="css_form">
-          <h4>文件</h4>
-          <el-input v-model="form_save.list_file[0].url"></el-input>
-        </li>
-
-        <li class="css_form">
-          <h4>个人价格</h4>
-          <el-input v-model="form_save.price_personal"></el-input>
-        </li>
-        <li class="css_form">
-          <h4>企业价格</h4>
-          <el-input v-model="form_save.price_company"></el-input>
-        </li>
-        <li class="css_form">
-          <h4>企业扩展价格</h4>
-          <el-input v-model="form_save.price_extend"></el-input>
-        </li>
-        <li class="css_form">
-          <h4>模型格式</h4>
-          <el-input v-model="form_save.model_format"></el-input>
-        </li>
-        <li class="css_form">
-          <h4>收藏数量</h4>
-          <el-input v-model="form_save.count_collect"></el-input>
-        </li>
-        <li class="css_form">
-          <h4>布线</h4>
-          <el-input v-model="form_save.wiring"></el-input>
-        </li>
-        <li class="css_form">
-          <h4>面积单位</h4>
-          <el-input v-model="form_save.area_unit"></el-input>
-        </li>
-        <li class="css_form">
-          <h4>种类</h4>
-          <el-input v-model="form_save.kind_ids"></el-input>
-        </li>
-        <li class="css_form">
-          <h4>是否公开</h4>
-          <el-switch v-model="form_save.is_public"></el-switch>
-        </li>
-        <li class="css_form">
-          <h4>是否删除</h4>
-          <el-switch v-model="form_save.is_deleted"></el-switch>
-        </li>
-        <li class="css_form">
-          <h4>是否审核</h4>
-          <el-switch v-model="form_save.is_check"></el-switch>
-        </li>
-        <li class="css_form">
-          <h4>是否商用</h4>
-          <el-switch v-model="form_save.is_business"></el-switch>
-        </li>
-        <li class="css_form">
-          <h4>是否骨骼</h4>
-          <el-switch v-model="form_save.is_skeleton"></el-switch>
-        </li>
-        <li class="css_form">
-          <h4>是否动画</h4>
-          <el-switch v-model="form_save.is_animation"></el-switch>
-        </li>
-        <li class="css_form">
-          <h4>是否打印</h4>
-          <el-switch v-model="form_save.is_print"></el-switch>
-        </li>
-        <li class="css_form">
-          <h4>是否未塌陷</h4>
-          <el-switch v-model="form_save.is_no_collapse"></el-switch>
-        </li>
-      </nav>
-
-      <el-button size="small" @click="save_model_product()" type="primary"> save_model_product </el-button>
-    </el-dialog>
   </main>
 </template>
 <script lang="ts">
@@ -331,9 +131,7 @@ export default {
   data() {
     return {
       BUS: BUS,
-      user_id: 1,
-
-      show_info_modal: false as boolean,
+      show_save_model_product: false as boolean,
 
       // 表单
       form_find: {
@@ -360,34 +158,30 @@ export default {
       },
 
       form_save: {
-        kind_ids: [],
-        title: '标题',
-        remark: '描述',
-        is_public: true,
-        is_deleted: false,
-        is_check: true,
-        is_business: true,
-        is_skeleton: true,
-        is_animation: true,
-        is_print: true,
-        is_no_collapse: true,
-        model_format: '.stl',
-        count_collect: 0,
-        wiring: '',
-        area_unit: '',
-        price_personal: 111,
-        price_company: 1111,
-        price_extend: 11111,
+        kind_ids: [], //种类
+        title: '标题', //标题
+        remark: '描述', //描述
+        is_public: true, //是否公开
+        is_deleted: false, //是否删除
+        is_business: true, //是否商用
+        is_skeleton: true, //是否骨骼
+        is_animation: true, //是否动画
+        is_print: true, //是否打印
+        is_no_collapse: true, //是否未塌陷
+        model_format: '.stl', //模型格式
 
-        list_img: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }],
-        list_file: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }],
-        list_video: [],
-        list_extend: [],
-        list_texture: [],
+        wiring: '', //布线
+        area_unit: '', //面积单位
+        price_personal: 111, //个人价格
+        price_company: 1111, //企业价格
+        price_extend: 11111, //企业扩展价格
+
+        list_img: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //图片
+        list_file: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //文件
+        list_video: [], //视频
+        list_extend: [], //扩展
+        list_texture: [], //纹理
       },
-
-      // show_add_product_modal
-      show_add_product_modal: false as boolean,
     }
   }, ////
   methods: {
@@ -415,9 +209,8 @@ export default {
 
     async save_model_card() {
       const form = {
-        user_id: this.user_id,
+        user_id: BUS.STORE.user_id,
         product_id: BUS.STORE.selected_model_product.id,
-        price: BUS.STORE.selected_model_product.price_personal,
         price_type: 'price_personal',
       }
 
@@ -443,7 +236,7 @@ export default {
     },
 
     async create_order_from_cart() {
-      let form = { user_id: this.user_id, price_sub: 0 }
+      let form = { user_id: BUS.STORE.user_id, price_sub: 0 }
       const res: any = await axios_api.post('/create_order_from_cart', form)
       console.log('create_order_from_cart---res:', res)
       if (res.code === 200) {

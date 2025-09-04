@@ -1,90 +1,43 @@
 <template>
-  <!-- 购物车 -->
-  <nav style="border: 1px solid #000">
-    <el-button size="small" @click="find_list_model_card()" type="primary"> find_list_model_card111 </el-button>
-    <el-button size="small" @click="create_order_from_cart()" type="primary"> create_order_from_cart </el-button>
+  <!-- 工具栏 -->
+  <el-button size="small" @click="find_list_model_card()" type="primary"> find_list_model_card111 </el-button>
+  <!-- <el-button size="small" @click="create_model_order()" type="primary"> create_model_order </el-button> -->
 
-    <ul>
-      <li v-for="(item, index) in BUS.STORE.list_model_card" :key="item.id">
-        <el-card shadow="hover" style="width: 400px">
-          <div>{{ item.id }}</div>
-          <el-button size="small" @click="delete_model_card(item.id)" type="primary"> delete_model_card </el-button>
-          <el-button size="small" @click=";(BUS.STORE.show_cart_json_modal = true), (BUS.STORE.selected_cart_json = item)" type="primary"> selected_cart_json </el-button>
-        </el-card>
-      </li>
-    </ul>
-
-    <el-dialog title="添加3D模型" width="500px" v-model="BUS.STORE.show_cart_json_modal" :close-on-click-modal="false">
-      <el-input :value="JSON.stringify(BUS.STORE.selected_cart_json, null, 2)" type="textarea" :rows="20" readonly></el-input>
-    </el-dialog>
-  </nav>
+  <!-- 列表 -->
+  <ul>
+    <li v-for="(item, index) in list_model_card" :key="item.id">
+      <el-card shadow="hover" style="width: 400px">
+        <div>{{ item.id }}</div>
+        <!-- <el-button size="small" @click="delete_model_card(item.id)" type="primary"> delete_model_card </el-button> -->
+        <!-- <el-button size="small" @click=";(BUS.STORE.show_cart_json_modal = true), (BUS.STORE.selected_cart_json = item)" type="primary"> selected_cart_json </el-button> -->
+      </el-card>
+    </li>
+  </ul>
 </template>
-<script lang="ts">
-import { useRoute } from 'vue-router'
-import { ref, getCurrentInstance } from 'vue'
+
+<script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { BUS } from '@/BUS'
-import { ElMessage } from 'element-plus'
-import { axios_api } from '@/config/axios_instance'
 
-export default {
-  setup() {
-    const route = useRoute()
-    return {
-      route,
-    }
-  },
-  data() {
-    return {
-      BUS,
-    }
-  }, ////
-  methods: {
-    async find_list_model_card() {
-      const form = {
-        user_id: BUS.STORE.user_id,
-        page_index: 1,
-        page_size: 10,
-        order_by: 'created_at',
-        order_type: 'desc',
-      }
 
-      const res: any = await axios_api.post('/find_list_model_card', form)
-      console.log('find_list_model_card---res:', res)
-      if (res.code === 200) {
-        ElMessage.success(res.msg)
+// 数据=======================================
+let list_model_card = $ref([] as any[])
 
-        BUS.STORE.list_model_card = res.result.list
-        // window.list_model_card = this.list_model_card
-      } else {
-        ElMessage.error(res.msg)
-      }
-    },
+// 方法=======================================
+async function find_list_model_card() {
+  const form = { user_id: BUS.STORE.user_id, page_index: 1, page_size: 10, order_by: 'created_at', order_type: 'desc' }
 
-    async create_order_from_cart() {
-      let form = { user_id: BUS.STORE.user_id, price_sub: 0 }
-      const res: any = await axios_api.post('/create_order_from_cart', form)
-      console.log('create_order_from_cart---res:', res)
-      if (res.code === 200) {
-        ElMessage.success(res.msg)
-      } else {
-        ElMessage.error(res.msg)
-      }
-    },
-
-    async delete_model_card(id: number) {
-      const res: any = await axios_api.get(`/delete_model_card?id=${id}`)
-      console.log('delete_model_card---res:', res)
-      if (res.code === 200) {
-        ElMessage.success(res.msg)
-        this.find_list_model_card()
-      } else {
-        ElMessage.error(res.msg)
-      }
-    },
-  }, ////
-  async mounted() {
-    this.find_list_model_card()
-  },
+  const res: any = await axios_api.post('/find_list_model_card', form)
+  console.log('find_list_model_card---res:', res)
+  if (res.code === 200) {
+    ElMessage.success(res.msg)
+    list_model_card.value = res.result.list
+  } else {
+    ElMessage.error(res.msg)
+  }
 }
 </script>
+
 <style scoped></style>
