@@ -11,4 +11,10 @@ export const view_shop: RouteRecordRaw[] = [
     name: '商城3D模型',
     component: () => import('../view/shop/model_3d.vue'),
   },
-] 
+
+  {
+    path: '/view/shop/model',
+    name: '商城3D模型详情',
+    component: () => import('../view/shop/model/index.vue'),
+  },
+]

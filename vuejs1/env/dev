@@ -9,7 +9,7 @@ VITE_url_db_pg="postgresql://root:123456@192.168.0.250:60000/back?schema=public"
 
 # 🚀 url相关配置____________________________________________________________
 VITE_port           = 6001                           #服务端口号
-VITE_url_app_run   = http://127.0.0.1:6001           #真实url
+VITE_url_app_run   = http://127.0.0.1:3000           #真实url
 VITE_url_app_dev    = http://127.0.0.1:6001          #开发url
 VITE_url_app_inner  = http://192.168.0.250:60001     #内网url
 VITE_url_app_docker = https://server.oss.yun3d.com   #容器url(必须https)
@@ -22,7 +22,5 @@ VITE_jwt_secret ="xzz2021"
 # JWT过期时间 1d(1天), 7d(7天)
 VITE_jwt_time_exp   ="1d"
 # JWT方便swagger文档调试使用
-VITE_jwt_token_swagger ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjE1MTYwMzE1MTEwIiwicGhvbmUiOiIxNTE2MDMxNTExMCIsImlkIjoxLCJyb2xlSWRzIjpbXSwiZGVwYXJ0bWVudCI6W3siaWQiOjJ9XSwiaWF0IjoxNzU2MTg4NDkwLCJleHAiOjE3NTYyNzQ4OTB9.GJiORz6ZLRAgvWD0-73m-npC1Ucr2p5H6tHKBDGwkqY"
-  
-  
+VITE_jwt_token_swagger ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjE1MTYwMzE1MTEwIiwicGhvbmUiOiIxNTE2MDMxNTExMCIsImlkIjoxLCJyb2xlSWRzIjpbXSwiaWF0IjoxNzU2ODEzODM5LCJleHAiOjI2MjA3Mjc0MzksImlhdF90aW1lIjoiMjAyNS0wOS0wMiAxOTo1MDozOSIsImV4cF90aW1lIjoiMjA1My0wMS0xNyAxOTo1MDozOSJ9.ms6AOMGE_UYaAS3ilcdEdK6R2FGKGUVKVDBzAB_XP40'
   

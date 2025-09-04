@@ -14,6 +14,7 @@
           class="header_menu" color background-color="#304156" text-color="#bfcbd9" active-text-color="#409eff">
           <el-menu-item index="/view/shop/print_3d">商城3D打印</el-menu-item>
           <el-menu-item index="/view/shop/model_3d">商城3D模型</el-menu-item>
+          <el-menu-item index="/view/shop/model">商城模型</el-menu-item>
         </el-menu>
 
         <div style="display: flex; align-items: center; gap: 10px; justify-content: center">
