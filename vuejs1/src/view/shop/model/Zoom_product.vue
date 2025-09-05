@@ -34,6 +34,12 @@
       <el-dialog title="show_save_model_product" width="500px" v-model="show_save_model_product" :close-on-click-modal="false">
         <nav style="max-height: 500px; overflow-y: auto; padding-right: 10px">
           <li class="css_form">
+            <h4>种类</h4>
+            <!-- <el-input v-model="form_save.kind_ids"></el-input> -->
+            <el-cascader v-model="form_save.kind_ids" :options="tree_model_kind" :props="cascader_props" placeholder="请选择分类" clearable multiple style="width: 100%"></el-cascader>
+          </li>
+
+          <li class="css_form">
             <h4>模型标题</h4>
             <el-input v-model="form_save.title"></el-input>
           </li>
@@ -46,15 +52,15 @@
             <el-input v-model="form_save.remark"></el-input>
           </li>
 
-          <!-- <li class="css_form">
-          <h4>图片</h4>
-          <el-input v-model="selected_model_product.list_img [0].url"></el-input>
-        </li>
+          <li class="css_form">
+            <h4>图片</h4>
+            <el-input v-model="form_save.list_img[0].url"></el-input>
+          </li>
 
-        <li class="css_form">
-          <h4>文件</h4>
-          <el-input v-model="selected_model_product.list_file[0].url"></el-input>
-        </li> -->
+          <li class="css_form">
+            <h4>文件</h4>
+            <el-input v-model="form_save.list_file[0].url"></el-input>
+          </li>
 
           <li class="css_form">
             <h4>个人价格</h4>
@@ -81,11 +87,7 @@
             <h4>面积单位</h4>
             <el-input v-model="form_save.area_unit"></el-input>
           </li>
-          <li class="css_form">
-            <h4>种类</h4>
-            <!-- <el-input v-model="form_save.kind_ids"></el-input> -->
-            <el-cascader v-model="form_save.kind_ids" :options="tree_model_kind" :props="cascader_props" placeholder="请选择分类" clearable multiple style="width: 100%"></el-cascader>
-          </li>
+
           <li class="css_form">
             <h4>是否公开</h4>
             <el-switch v-model="form_save.is_public"></el-switch>
@@ -139,13 +141,7 @@ let show_save_model_product = $ref<boolean>(false)
 // 分类数据
 let tree_model_kind = $ref<any>([])
 let tree_id_list = $ref([] as any)
-let cascader_props = $ref({
-  value: 'id',
-  label: 'name',
-  children: 'children',
-  multiple: true,
-  checkStrictly: true,
-})
+let cascader_props = $ref({ value: 'id', label: 'name', children: 'children', multiple: true, checkStrictly: true })
 
 // 表单数据
 const form_find = $ref({
@@ -197,7 +193,7 @@ const form_save = $ref({
   list_texture: [], //纹理
 })
 
-// 方法
+// 方法=======================================
 const find_list_model_product = async () => {
   let aaa = tree_id_list
   console.log('tree_id_list', JSON.parse(JSON.stringify(aaa)))
@@ -206,7 +202,6 @@ const find_list_model_product = async () => {
 
   form_find.kind_ids = arr_number as []
   // form_find.kind_ids = [1]
-
   // debugger
   const res: any = await axios_api.post('/find_list_model_product', form_find)
   console.log('find_list_model_product---res:', res)
@@ -220,11 +215,9 @@ const find_list_model_product = async () => {
 
 const save_model_product = async () => {
   let arr_number = _.flattenDeep(form_save.kind_ids)
-
   console.log(`111---arr_number:`, arr_number)
-
   form_save.kind_ids = arr_number
-  // form_save.kind_ids = ["arr_number"] 
+  // form_save.kind_ids = ["arr_number"]
   const res: any = await axios_api.post('/save_model_product', form_save)
   console.log('save_model_product---res:', res)
   if (res.code === 200) {
