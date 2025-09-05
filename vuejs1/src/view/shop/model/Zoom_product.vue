@@ -203,7 +203,7 @@ const find_list_model_product = async () => {
   form_find.kind_ids = arr_number as []
   // form_find.kind_ids = [1]
   // debugger
-  const res: any = await axios_api.post('/api_model/find_list_model_product', form_find)
+  const res: any = await axios_api.post('/model_api/find_list_model_product', form_find)
   console.log('find_list_model_product---res:', res)
   if (res.code === 200) {
     BUS.model.list_model_product = res.result.list
@@ -218,7 +218,7 @@ const save_model_product = async () => {
   console.log(`111---arr_number:`, arr_number)
   form_save.kind_ids = arr_number
   // form_save.kind_ids = ["arr_number"]
-  const res: any = await axios_api.post('/api_model/save_model_product', form_save)
+  const res: any = await axios_api.post('/model_api/save_model_product', form_save)
   console.log('save_model_product---res:', res)
   if (res.code === 200) {
     ElMessage.success(res.msg)
@@ -236,7 +236,7 @@ const save_model_card = async () => {
     count: 1,
   }
 
-  const res: any = await axios_api.post('/api_model/save_model_card', form)
+  const res: any = await axios_api.post('/model_api/save_model_card', form)
   console.log('save_model_card---res:', res)
   if (res.code === 200) {
     ElMessage.success(res.msg)
@@ -251,7 +251,7 @@ const save_model_card = async () => {
 
 const delete_model_product = async (id: number) => {
   console.log('delete_model_product---id:', id)
-  const res: any = await axios_api.get(`/api_model/delete_model_product?id=${id}`)
+  const res: any = await axios_api.get(`/model_api/delete_model_product?id=${id}`)
   console.log('delete_model_product---res:', res)
   if (res.code === 200) {
     ElMessage.success(res.msg)
@@ -262,7 +262,7 @@ const delete_model_product = async (id: number) => {
 }
 
 async function get_tree_model_kind() {
-  const res: any = await axios_api.get(`/api_model/get_tree_model_kind`)
+  const res: any = await axios_api.get(`/model_api/get_tree_model_kind`)
   console.log('get_tree_model_kind---res:', res)
 
   if (res.code === 200) {

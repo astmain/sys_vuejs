@@ -9,7 +9,7 @@ export const useBUS = defineStore('BUS_defineStore', {
     count: 0,
     web_type: 'admin',
     VITE_url_app_run: '',
-    VITE_url_app_list: [],
+    VITE_url_app_list: [] as any[],
     token: '',
     model: model(),
   }),

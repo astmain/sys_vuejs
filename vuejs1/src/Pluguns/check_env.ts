@@ -18,7 +18,7 @@ let rule_env = [
 export function check_env() {
   // 前置声明要使用的变量
   let env_err_list: any[] = []
-  let env_curr = {}
+  let env_curr = {} as any
   let env_info_list: any[] = []
   let env_curr_web_description = {}
   let rule_keys = rule_env.map((o) => o.key)
@@ -48,6 +48,7 @@ export function check_env() {
   for (let i = 0; i < env_info_list.length; i++) {
     const one = env_info_list[i]
     if (one.doc) {
+      // @ts-ignore
       env_curr_web_description[one.name] = {
         ['首页']: one.value,
         ['文档']: one.value + '/doc.html',

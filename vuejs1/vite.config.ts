@@ -70,7 +70,7 @@ export default defineConfig(({ command, mode }) => {
     },
     server: {
       host: '127.0.0.1',
-      port: 8001,
+      port: 8080,
       open: true,
     },
     // build: config_build(mode),

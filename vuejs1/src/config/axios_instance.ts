@@ -16,6 +16,7 @@ axios_instance.interceptors.request.use(
     // config.headers['token'] =  import.meta.env.VITE_token
     // config.headers['token'] =  localStorage.getItem('token') ||    import.meta.env.VITE_jwt_token_swagger
     config.headers['token'] = import.meta.env.VITE_jwt_token_swagger
+    config.headers['Authorization'] = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjE1MTYwMzE1MTEwIiwicGhvbmUiOiIxNTE2MDMxNTExMCIsImlkIjoxLCJ1c2VyX2lkIjoxLCJyb2xlSWRzIjpbXSwiZGVwYXJ0bWVudCI6W3siaWQiOjJ9XSwiaWF0IjoxNzU3MDQ1NDQzLCJleHAiOjE3NTcxMzE4NDN9.pr1zrkXrNxtumxcZmI_3Acbmy-C9Qb_O9cZRWeQ1QkQ"
     return config
   },
   (error) => {

@@ -110,6 +110,7 @@
 </template>
 <script lang="ts">
 import {tool_upload, axios_oss} from './tool_upload'
+import { ElMessage } from 'element-plus'
 import Menu1 from './Menu1.vue'
 import axios from 'axios'
 import {BUS} from '../../../BUS'
@@ -344,7 +345,7 @@ export default {
       }
     }
 
-    BUS.VITE_url_app_list = arr
+    BUS.VITE_url_app_list = arr as any[]
 
     console.log(`arr---`, arr)
     console.log(`VITE_url_ap_list---`, BUS.VITE_url_app_list)
