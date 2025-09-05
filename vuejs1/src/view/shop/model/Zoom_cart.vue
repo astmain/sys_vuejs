@@ -66,7 +66,7 @@ function handleSelectionChange(item: any) {
 async function find_list_model_card() {
   const form = { user_id: BUS.model.user_id, page_index: 1, page_size: 10, order_by: 'created_at', order_type: 'desc' }
 
-  const res: any = await axios_api.post('/find_list_model_card', form)
+  const res: any = await axios_api.post('/api_model/find_list_model_card', form)
   console.log('find_list_model_card---res:', res)
   if (res.code === 200) {
     ElMessage.success(res.msg)
@@ -82,7 +82,7 @@ async function find_list_model_card() {
 
 BUS.model.find_list_model_card = find_list_model_card //全局方法暴露
 async function delete_model_card(id: number) {
-  const res: any = await axios_api.get(`/delete_model_card?id=${id}`)
+  const res: any = await axios_api.get(`/api_model/delete_model_card?id=${id}`)
   console.log('delete_model_card---res:', res)
   if (res.code === 200) {
     ElMessage.success(res.msg)
@@ -93,7 +93,7 @@ async function delete_model_card(id: number) {
 }
 
 async function create_model_order() {
-  const res: any = await axios_api.post('/create_model_order', { cart_id_list_select, user_id: BUS.model.user_id })
+  const res: any = await axios_api.post('/api_model/create_model_order', { cart_id_list_select, user_id: BUS.model.user_id })
   console.log('create_model_order---res:', res)
   if (res.code === 200) {
     ElMessage.success(res.msg)

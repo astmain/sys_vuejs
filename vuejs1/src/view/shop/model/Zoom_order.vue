@@ -53,7 +53,7 @@ export default {
         order_type: 'desc',
       }
 
-      const res: any = await axios_api.post('/find_list_model_order', form)
+      const res: any = await axios_api.post('/api_model/find_list_model_order', form)
       console.log('find_list_model_order---res:', res)
       if (res.code === 200) {
         ElMessage.success(res.msg)
@@ -65,7 +65,7 @@ export default {
     },
 
     async delete_model_order(order_number: string) {
-      const res: any = await axios_api.get(`/delete_model_order?order_number=${order_number}`)
+      const res: any = await axios_api.get(`/api_model/delete_model_order?order_number=${order_number}`)
       console.log('delete_model_order---res:', res)
       if (res.code === 200) {
         ElMessage.success(res.msg)
