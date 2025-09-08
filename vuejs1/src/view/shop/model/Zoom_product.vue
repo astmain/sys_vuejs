@@ -45,7 +45,7 @@
           </li>
           <li class="css_form">
             <h4>模型格式</h4>
-            <el-input v-model="form_save.model_format"></el-input>
+            <el-input v-model="form_save.type_format"></el-input>  
           </li>
           <li class="css_form">
             <h4>模型描述</h4>
@@ -76,18 +76,17 @@
           </li>
           <li class="css_form">
             <h4>模型格式</h4>
-            <el-input v-model="form_save.model_format"></el-input>
+            <el-input v-model="form_save.type_format"></el-input>
           </li>
 
           <li class="css_form">
             <h4>布线</h4>
-            <el-input v-model="form_save.wiring"></el-input>
+            <el-input v-model="form_save.type_wiring"></el-input>
           </li>
           <li class="css_form">
             <h4>面积单位</h4>
-            <el-input v-model="form_save.area_unit"></el-input>
+            <el-input v-model="form_save.type_area"></el-input>
           </li>
-
 
           <li class="css_form">
             <h4>点数</h4>
@@ -168,6 +167,7 @@ const form_find = $ref({
   is_animation: null,
   is_print: null,
   is_no_collapse: null,
+
   wiring: '',
   area_unit: '',
   kind_ids: [] as number[],
@@ -184,17 +184,26 @@ const form_save = $ref({
   is_animation: true, //是否动画
   is_print: true, //是否打印
   is_no_collapse: true, //是否未塌陷
-  model_format: '.stl', //模型格式
 
-  wiring: '三角形', //布线
-  area_unit: '5k以下', //面片数
-  points:666,//点数
+
+  type_uv: 'uv1', //uv
+  type_wiring: 'wiring1', //布线
+  type_area: 'area1', //面片数
+  type_format: 'format1', //模型格式
+
+
+  points: 666, //点数
   price_type: 'price_free', //价格类型
   price_free: 0, //免费价格
   price_personal: 111, //个人价格
   price_company: 1111, //企业价格
   price_extend: 11111, //企业扩展价格
   is_copyright: true, //是否版权
+
+  is_chartlet: true, //是否有材质
+  is_texture: true, //是否有贴图
+  is_plug_in: true, //是否插件
+  is_plug_in_remark: '', //是否插件
 
   main_img: 'https://www.baidu.com/img/flexible/logo/pc/result.png', //主图
   list_img: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //图片
@@ -203,6 +212,42 @@ const form_save = $ref({
   list_extend: [], //扩展
   list_texture: [], //纹理
 })
+
+// const form_save = $ref({
+//   kind_ids: [], //种类
+//   title: '标题', //标题
+//   remark: '描述', //描述
+//   is_public: true, //是否公开
+//   is_deleted: false, //是否删除
+//   is_business: true, //是否商用
+//   is_skeleton: true, //是否骨骼
+//   is_animation: true, //是否动画
+//   is_print: true, //是否打印
+//   is_no_collapse: true, //是否未塌陷
+//   model_format: '.stl', //模型格式
+
+//   wiring: '三角形', //布线
+//   area_unit: '5k以下', //面片数
+//   points: 666, //点数
+//   price_type: 'price_free', //价格类型
+//   price_free: 0, //免费价格
+//   price_personal: 111, //个人价格
+//   price_company: 1111, //企业价格
+//   price_extend: 11111, //企业扩展价格
+//   is_copyright: true, //是否版权
+
+//   is_chartlet: true, //是否有材质
+//   is_texture: true, //是否有贴图
+//   is_plug_in: true, //是否插件
+//   is_plug_in_remark: '', //是否插件
+
+//   main_img: 'https://www.baidu.com/img/flexible/logo/pc/result.png', //主图
+//   list_img: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //图片
+//   list_file: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //文件
+//   list_video: [], //视频
+//   list_extend: [], //扩展
+//   list_texture: [], //纹理
+// })
 
 // 方法=======================================
 const find_list_model_product = async () => {
