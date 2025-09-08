@@ -9,8 +9,8 @@ VITE_url_db_pg="postgresql://root:123456@192.168.0.250:60000/back?schema=public"
 
 # 🚀 url相关配置____________________________________________________________
 VITE_port           = 6001                           #服务端口号
-VITE_url_app_run   = http://127.0.0.1:3000           #真实url
-# VITE_url_app_run   = http://127.0.0.1:8001/api           #真实url
+# VITE_url_app_run   = http://127.0.0.1:3000           #真实url
+VITE_url_app_run   = http://127.0.0.1:8001/api           #真实url
 VITE_url_app_dev    = http://127.0.0.1:6001          #开发url
 VITE_url_app_inner  = http://192.168.0.250:60001     #内网url
 VITE_url_app_docker = https://server.oss.yun3d.com   #容器url(必须https)

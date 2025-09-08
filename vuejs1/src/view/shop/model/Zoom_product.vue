@@ -3,7 +3,7 @@
     <!-- 商品 -->
     <nav style="border: 1px solid #000">
       <!-- 工具栏 -->
-      <el-button size="small" @click="get_tree_model_kind()" type="info"> get_tree_model_kind </el-button>
+      <el-button size="small" @click="find_model_kind_tree()" type="info"> find_model_kind_tree </el-button>
       <el-cascader v-model="tree_id_list" :options="tree_model_kind" :props="cascader_props" placeholder="请选择分类" clearable multiple style="width: 100%"></el-cascader>
 
       <el-button size="small" @click="find_list_model_product()" type="primary"> find_list_model_product </el-button>
@@ -180,12 +180,17 @@ const form_save = $ref({
   is_no_collapse: true, //是否未塌陷
   model_format: '.stl', //模型格式
 
-  wiring: '', //布线
-  area_unit: '', //面积单位
+  wiring: '三角形', //布线
+  area_unit: '5k以下', //面片数
+  price_type:"price_free", //价格类型
+  price_free: 0, //免费价格
   price_personal: 111, //个人价格
   price_company: 1111, //企业价格
   price_extend: 11111, //企业扩展价格
+  is_copyright: true, //是否版权
 
+
+  main_img: 'https://www.baidu.com/img/flexible/logo/pc/result.png', //主图
   list_img: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //图片
   list_file: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //文件
   list_video: [], //视频
@@ -215,6 +220,7 @@ const find_list_model_product = async () => {
 
 const save_model_product = async () => {
   let arr_number = _.flattenDeep(form_save.kind_ids)
+  console.log(`111---form_save.kind_ids:`,  JSON.parse(JSON.stringify(form_save.kind_ids)))
   console.log(`111---arr_number:`, arr_number)
   form_save.kind_ids = arr_number
   // form_save.kind_ids = ["arr_number"]
@@ -261,9 +267,9 @@ const delete_model_product = async (id: number) => {
   }
 }
 
-async function get_tree_model_kind() {
-  const res: any = await axios_api.get(`/model_api/get_tree_model_kind`)
-  console.log('get_tree_model_kind---res:', res)
+async function find_model_kind_tree() {
+  const res: any = await axios_api.get(`/model_api/find_model_kind_tree`)
+  console.log('find_model_kind_tree---res:', res)
 
   if (res.code === 200) {
     ElMessage.success(res.msg)
@@ -275,7 +281,7 @@ async function get_tree_model_kind() {
 
 // 生命周期
 onMounted(async () => {
-  await get_tree_model_kind()
+  await find_model_kind_tree()
   await find_list_model_product()
 })
 </script>

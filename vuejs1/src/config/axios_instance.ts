@@ -35,6 +35,15 @@ axios_instance.interceptors.response.use(
     // alert(error.message)
     // console.log(error.response)
     // return Promise.reject(error)
+
+    console.log('error.response.data:', error.response.data)
+
+
+
+
+
+    error.response.data.msg = error.response.data.msg || error.response.data.message 
+
     return error.response.data
   }
 )
