@@ -4,7 +4,7 @@
     <nav style="border: 1px solid #000">
       <!-- 工具栏 -->
       <el-button size="small" @click="find_model_kind_tree()" type="info"> find_model_kind_tree </el-button>
-      <el-cascader v-model="tree_id_list" :options="tree_model_kind" :props="cascader_props" placeholder="请选择分类" clearable multiple style="width: 100%"></el-cascader>
+      <el-cascader :options="tree_model_kind" v-model="tree_id_list" :props="cascader_props" placeholder="请选择分类" clearable multiple style="width: 100%"></el-cascader>
 
       <el-button size="small" @click="find_list_model_product()" type="primary"> find_list_model_product </el-button>
       <el-button size="small" @click="show_save_model_product = true" type="success"> save_model_product </el-button>
@@ -182,13 +182,12 @@ const form_save = $ref({
 
   wiring: '三角形', //布线
   area_unit: '5k以下', //面片数
-  price_type:"price_free", //价格类型
+  price_type: 'price_free', //价格类型
   price_free: 0, //免费价格
   price_personal: 111, //个人价格
   price_company: 1111, //企业价格
   price_extend: 11111, //企业扩展价格
   is_copyright: true, //是否版权
-
 
   main_img: 'https://www.baidu.com/img/flexible/logo/pc/result.png', //主图
   list_img: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //图片
@@ -201,8 +200,8 @@ const form_save = $ref({
 // 方法=======================================
 const find_list_model_product = async () => {
   let aaa = tree_id_list
-  console.log('tree_id_list', JSON.parse(JSON.stringify(aaa)))
-  let arr_number = _.flattenDeep(tree_id_list)
+  console.log('tree_id_list', JSON.parse(JSON.stringify(aaa))) // [[1,2,3 ][1,2,3 ]]
+  let arr_number = _.flattenDeep(tree_id_list) // [1,2,3,1,2,3]
   console.log(`111---arr_number:`, arr_number)
 
   form_find.kind_ids = arr_number as []
@@ -220,7 +219,7 @@ const find_list_model_product = async () => {
 
 const save_model_product = async () => {
   let arr_number = _.flattenDeep(form_save.kind_ids)
-  console.log(`111---form_save.kind_ids:`,  JSON.parse(JSON.stringify(form_save.kind_ids)))
+  console.log(`111---form_save.kind_ids:`, JSON.parse(JSON.stringify(form_save.kind_ids)))
   console.log(`111---arr_number:`, arr_number)
   form_save.kind_ids = arr_number
   // form_save.kind_ids = ["arr_number"]

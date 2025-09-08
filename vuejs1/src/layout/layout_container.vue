@@ -1,23 +1,24 @@
 <template>
   <el-container style="height: 100vh">
     <el-header style="width: 100vw; height: 60px; background: #304156; color: #fff">
-      <div
-        style="display: flex; align-items: center; justify-content: center; width: 100%; height: 60px; justify-content: space-between">
-
-
+      <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 60px; justify-content: space-between">
         <!-- 切换网站类型 -->
         <span v-if="BUS.web_type === 'shop'" style="font-size: 24px; font-weight: bold">3D打印</span>
         <span v-if="BUS.web_type === 'admin'" style="font-size: 24px; font-weight: bold">后台管理</span>
 
-
-        <el-menu style="flex: 1" v-show="BUS.web_type === 'shop'" mode="horizontal" :default-active="active_menu" router
-          class="header_menu" color background-color="#304156" text-color="#bfcbd9" active-text-color="#409eff">
+        <el-menu style="flex: 1" v-show="BUS.web_type === 'shop'" mode="horizontal" :default-active="active_menu" router class="header_menu" color background-color="#304156" text-color="#bfcbd9" active-text-color="#409eff">
           <el-menu-item index="/view/shop/print_3d">商城3D打印</el-menu-item>
           <el-menu-item index="/view/shop/model_3d">商城3D模型</el-menu-item>
           <el-menu-item index="/view/shop/model">商城模型</el-menu-item>
         </el-menu>
 
         <div style="display: flex; align-items: center; gap: 10px; justify-content: center">
+          <div>
+            {{ BUS.url_api_curr.url }}
+            <el-button @click="switch_api"> 测试api切换</el-button>
+            <el-button @click="test_axios"> 测试axios</el-button>
+          </div>
+
           <el-button :type="BUS.web_type === 'shop' ? 'primary' : ''" @click="handle_switch_shop"> shop</el-button>
           <el-button :type="BUS.web_type === 'admin' ? 'primary' : ''" @click="handle_switch_admin"> admin</el-button>
           <div style="width: 100px; text-align: center">{{ username }}</div>
@@ -29,14 +30,13 @@
     <el-container>
       <div v-show="BUS.web_type === 'admin'">
         <el-aside width="200px" style="background: #304156; height: 100%" class="admin_aside">
-          <el-menu :default-active="active_menu" style="border: none" router background-color="#304156"
-            text-color="#bfcbd9" active-text-color="#409eff">
-<!--            <el-menu-item index="/view/admin/users">-->
-<!--              <span>用户管理</span>-->
-<!--            </el-menu-item>-->
-<!--            <el-menu-item index="/view/admin/orders">-->
-<!--              <span>订单管理</span>-->
-<!--            </el-menu-item>-->
+          <el-menu :default-active="active_menu" style="border: none" router background-color="#304156" text-color="#bfcbd9" active-text-color="#409eff">
+            <!--            <el-menu-item index="/view/admin/users">-->
+            <!--              <span>用户管理</span>-->
+            <!--            </el-menu-item>-->
+            <!--            <el-menu-item index="/view/admin/orders">-->
+            <!--              <span>订单管理</span>-->
+            <!--            </el-menu-item>-->
             <el-menu-item index="/view/admin/file_sys">
               <span>文件系统</span>
             </el-menu-item>
@@ -49,6 +49,7 @@
       </el-main>
     </el-container>
   </el-container>
+  <dialog_switch_api ref="dialog_switch_api_ref" />
 </template>
 
 <script setup lang="ts">
@@ -56,6 +57,10 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { BUS } from '../BUS'
+import dialog_switch_api from './dialog_switch_api.vue'
+import { axios_api } from '../config/axios_instance'
+
+const dialog_switch_api_ref = ref<InstanceType<typeof dialog_switch_api> | null>(null)
 
 // 响应式数据
 
@@ -87,8 +92,17 @@ const handle_logout = (): void => {
   router.push('/login')
 }
 
+function switch_api(): void {
+  dialog_switch_api_ref.value?.open()
+}
+
+async function test_axios() {
+  let res = await axios_api.get('')
+  console.log('res', res)
+}
+
 // 生命周期
-onMounted(() => { })
+onMounted(() => {})
 </script>
 
 <style scoped></style>
