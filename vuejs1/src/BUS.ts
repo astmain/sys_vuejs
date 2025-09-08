@@ -16,10 +16,11 @@ export const useBUS = defineStore('BUS_defineStore', {
     url_api_list: [
       { name: '3000', url: 'http://127.0.0.1:3000' },
       { name: '3001', url: 'http://127.0.0.1:3001' },
+      { name: '8001', url: 'http://127.0.0.1:8001/api' },
     ],
   }),
   persist: [
-    { pick: ['count', 'web_type', 'VITE_url_app_run', 'VITE_url_app_list', 'token','url_api_curr','url_api_list'], storage: localStorage },
+    { pick: ['count', 'web_type', 'VITE_url_app_run', 'VITE_url_app_list', 'token','url_api_curr'], storage: localStorage },
 
     // {
     //   key: 'url_api_curr',

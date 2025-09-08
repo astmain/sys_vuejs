@@ -88,6 +88,12 @@
             <el-input v-model="form_save.area_unit"></el-input>
           </li>
 
+
+          <li class="css_form">
+            <h4>点数</h4>
+            <el-input v-model="form_save.points"></el-input>
+          </li>
+
           <li class="css_form">
             <h4>是否公开</h4>
             <el-switch v-model="form_save.is_public"></el-switch>
@@ -182,6 +188,7 @@ const form_save = $ref({
 
   wiring: '三角形', //布线
   area_unit: '5k以下', //面片数
+  points:666,//点数
   price_type: 'price_free', //价格类型
   price_free: 0, //免费价格
   price_personal: 111, //个人价格

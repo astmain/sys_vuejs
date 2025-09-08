@@ -13,12 +13,6 @@
         </el-menu>
 
         <div style="display: flex; align-items: center; gap: 10px; justify-content: center">
-          <div>
-            {{ BUS.url_api_curr.url }}
-            <el-button @click="switch_api"> 测试api切换</el-button>
-            <el-button @click="test_axios"> 测试axios</el-button>
-          </div>
-
           <el-button :type="BUS.web_type === 'shop' ? 'primary' : ''" @click="handle_switch_shop"> shop</el-button>
           <el-button :type="BUS.web_type === 'admin' ? 'primary' : ''" @click="handle_switch_admin"> admin</el-button>
           <div style="width: 100px; text-align: center">{{ username }}</div>
@@ -44,10 +38,15 @@
         </el-aside>
       </div>
 
-      <el-main class="layout_main" style="overflow-y: auto; height: calc(100vh - 60px)">
+      <el-main class="layout_main" style="overflow-y: auto; height: calc(100vh - 60px - 50px)">
         <router-view />
       </el-main>
     </el-container>
+    <div style="height: 50px; background: #304156; color: #fff">
+      {{ BUS.url_api_curr.url }}
+      <el-button @click="switch_api"> 测试api切换</el-button>
+      <el-button @click="test_axios"> 测试axios</el-button>
+    </div>
   </el-container>
   <dialog_switch_api ref="dialog_switch_api_ref" />
 </template>
@@ -63,7 +62,6 @@ import { axios_api } from '../config/axios_instance'
 const dialog_switch_api_ref = ref<InstanceType<typeof dialog_switch_api> | null>(null)
 
 // 响应式数据
-
 const username = ref<string>(localStorage.getItem('username') || '用户')
 
 // 路由

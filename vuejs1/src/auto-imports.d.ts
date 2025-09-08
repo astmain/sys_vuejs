@@ -9,7 +9,7 @@ declare global {
   const $computed: <T>(fn: () => T) => T
   const $ref: <T>(value: T) => T
   const $shallowRef: <T>(value: T) => T
-  const $toRef: <T>(value: T
+  const $toRef: <T>(value: T) => T
   const EffectScope: typeof import('vue')['EffectScope']
   const ElMessage: typeof import('element-plus')['ElMessage']
   const ElMessageBox: typeof import('element-plus')['ElMessageBox']

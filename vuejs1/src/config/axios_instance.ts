@@ -13,27 +13,26 @@ const axios_instance = axios.create({
   // baseURL: import.meta.env.VITE_url_app_run || '/',
   // baseURL: BUS.url_api_curr.url,
   // @ts-ignore
-  baseURL: import('../BUS.ts').then((res) => res.useBUS().url_api_curr.url),
+  // baseURL: import('../BUS.ts').then((res) => res.useBUS().url_api_curr.url),
   // timeout: 10000,
   // headers: {
   //   'Content-Type': 'application/json',
   // },
 })
 
-function get_url_api_curr() {
-  // let aaa = useBUS()
-  return BUS.url_api_curr.url
+// function get_url_api_curr() {
+//   // let aaa = useBUS()
+//   return (window as any).BUS.url_api_curr.url
 
-  return '1111'
-}
+//   return '1111'
+// }
 
 // 请求拦截器
 axios_instance.interceptors.request.use(
   (config) => {
-    config.url = get_url_api_curr()
-
+    config.url = (window as any).BUS.url_api_curr.url + config.url
     config.headers['token'] = import.meta.env.VITE_jwt_token_swagger
-    config.headers['Authorization'] = 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjE1MTYwMzE1MTEwIiwicGhvbmUiOiIxNTE2MDMxNTExMCIsImlkIjoxLCJ1c2VyX2lkIjoxLCJyb2xlSWRzIjpbXSwiZGVwYXJ0bWVudCI6W3siaWQiOjJ9XSwiaWF0IjoxNzU3MDQ1NDQzLCJleHAiOjE3NTcxMzE4NDN9.pr1zrkXrNxtumxcZmI_3Acbmy-C9Qb_O9cZRWeQ1QkQ'
+    config.headers['Authorization'] = 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjE1MTYwMzE1MTEwIiwicGhvbmUiOiIxNTE2MDMxNTExMCIsImlkIjoxLCJyb2xlSWRzIjpbXSwiaWF0IjoxNzU2ODEzODM5LCJleHAiOjI2MjA3Mjc0MzksImlhdF90aW1lIjoiMjAyNS0wOS0wMiAxOTo1MDozOSIsImV4cF90aW1lIjoiMjA1My0wMS0xNyAxOTo1MDozOSJ9.ms6AOMGE_UYaAS3ilcdEdK6R2FGKGUVKVDBzAB_XP40'
     return config
   },
   (error) => {
