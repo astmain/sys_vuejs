@@ -151,8 +151,8 @@ let cascader_props = $ref({ value: 'id', label: 'name', children: 'children', mu
 // 表单数据
 const form_find = $ref({
   // 分页字段
-  page_index: 1,
-  page_size: 10,
+  currentPage: 1,
+  pageSize: 10,
 
   // 模糊搜索字段
   is_check: null,
@@ -167,10 +167,18 @@ const form_find = $ref({
   is_animation: null,
   is_print: null,
   is_no_collapse: null,
+  is_copyright: null,
+  is_texture: null,
+  is_plug_in: null,
+  is_chartlet:null,
 
-  wiring: '',
-  area_unit: '',
   kind_ids: [] as number[],
+
+  type_format :'' ,
+  type_area:'' ,
+  type_wiring:'' ,
+  type_uv:'' ,
+
 })
 
 const form_save = $ref({
@@ -205,8 +213,8 @@ const form_save = $ref({
   is_plug_in: true, //是否插件
   is_plug_in_remark: '', //是否插件
 
-  main_img: 'https://www.baidu.com/img/flexible/logo/pc/result.png', //主图
-  list_img: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //图片
+  main_img: 'https://cdn.jsdelivr.net/gh/astmain/filestore@master/car.png', //主图
+  list_img: [{ url: 'https://cdn.jsdelivr.net/gh/astmain/filestore@master/car.png', name: '' }], //图片
   list_file: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //文件
   list_video: [], //视频
   list_extend: [], //扩展
