@@ -214,7 +214,8 @@ const form_save = $ref({
   is_plug_in_remark: '', //是否插件
 
   main_img: 'https://cdn.jsdelivr.net/gh/astmain/filestore@master/car.png', //主图
-  list_img: [{ url: 'https://cdn.jsdelivr.net/gh/astmain/filestore@master/car.png', name: '' }], //图片
+  list_img: [{ url: 'https://cdn.jsdelivr.net/gh/astmain/filestore@master/car.png', name: ''  ,size:100,size_format:'1MB'}], //图片
+  // list_img: [], //图片
   list_file: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //文件
   list_video: [], //视频
   list_extend: [], //扩展
