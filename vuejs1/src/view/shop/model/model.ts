@@ -9,6 +9,7 @@ export function model() {
   let list_model_order = [] as any[]
   let show_order_detail_modal = false as boolean
   let selected_order = {} as any
+  let order_number=''as string  //订单号
 
   // 购物车
   let list_model_card = [] as any[]

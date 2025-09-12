@@ -1,5 +1,21 @@
 <template>
-  <!-- 订单 -->
+  <nav>
+    <el-button size="small" @click="find_one_model_order()" type="primary"> find_one_model_order </el-button>
+    <div>order_number:{{ order.order_number }}</div>
+    <div>status:{{ order.status }}</div>
+    <div>price_pay:{{ order.price_pay }}</div>
+
+    <ul>
+      <li v-for="(item, index) in order.product_history" :key="item.id">
+        <el-card shadow="hover" style="width: 200px">
+          <div>title:{{ item.title }}</div>
+          <div>price_type:{{ item.price_type }}</div>
+        </el-card>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- 订单列表 -->
   <nav style="border: 1px solid #000">
     <el-button size="small" @click="find_list_model_order()" type="primary"> find_list_model_order </el-button>
     <ul>
@@ -38,6 +54,7 @@ export default {
   data() {
     return {
       BUS,
+      order: {} as any,
     }
   }, ////
 
@@ -48,8 +65,8 @@ export default {
         user_id: BUS.model.user_id, //
         order_number: '',
         status: '',
-        page_index: 1,
-        page_size: 10,
+        currentPage: 1,
+        pageSize: 100,
         order_by: 'created_at',
         order_type: 'desc',
       }
@@ -81,6 +98,18 @@ export default {
       if (res.code === 200) {
         ElMessage.success(res.msg)
         this.find_list_model_order()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    },
+    async find_one_model_order() {
+      // @ts-ignore
+      const res: any = await axios_api.post(`/model_api/find_one_model_order`, { order_number: BUS.model.order_number })
+      console.log('find_one_model_order---res:', res)
+      if (res.code === 200) {
+        ElMessage.success(res.msg)
+        // BUS.model.selected_order = res.result
+        this.order = res.result.order
       } else {
         ElMessage.error(res.msg)
       }

@@ -20,7 +20,7 @@
           <div>商品id:{{ item.product.id }}</div>
           <div>商品价格类型:{{ item.price_type }}</div>
           <div>商品价格:{{ item.product[item.price_type] }}</div>
-          <el-button size="small" @click="delete_model_card(item.id)" type="info"> delete_model_card </el-button>
+          <el-button size="small" @click="delete_ids_model_card(item.id)" type="info"> delete_ids_model_card </el-button>
         </el-card>
       </li>
     </ul>
@@ -64,7 +64,7 @@ function handleSelectionChange(item: any) {
 }
 
 async function find_list_model_card() {
-  const form = { user_id: BUS.model.user_id, page_index: 1, page_size: 10, order_by: 'created_at', order_type: 'desc' }
+  const form = { user_id: BUS.model.user_id, currentPage: 1, pageSize: 100, order_by: 'created_at', order_type: 'desc' }
 
   const res: any = await axios_api.post('/model_api/find_list_model_card', form)
   console.log('find_list_model_card---res:', res)
@@ -81,9 +81,9 @@ async function find_list_model_card() {
 }
 
 BUS.model.find_list_model_card = find_list_model_card //全局方法暴露
-async function delete_model_card(id: number) {
-  const res: any = await axios_api.get(`/model_api/delete_model_card?id=${id}`)
-  console.log('delete_model_card---res:', res)
+async function delete_ids_model_card(id: number) {
+  const res: any = await axios_api.post(`/model_api/delete_ids_model_card`, { ids: [id] })
+  console.log('delete_ids_model_card---res:', res)
   if (res.code === 200) {
     ElMessage.success(res.msg)
     find_list_model_card()
@@ -95,6 +95,11 @@ async function delete_model_card(id: number) {
 async function create_model_order() {
   const res: any = await axios_api.post('/model_api/create_model_order', { cart_id_list_select, user_id: BUS.model.user_id })
   console.log('create_model_order---res:', res)
+
+  let order_number = res.result.order_number
+  console.log('order_number', order_number)
+  // @ts-ignore
+  BUS.model.order_number = order_number 
   if (res.code === 200) {
     ElMessage.success(res.msg)
     BUS.model.find_list_model_order()
