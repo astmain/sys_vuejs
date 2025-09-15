@@ -25,7 +25,7 @@
             </nav>
             <el-button size="small" @click=";(show_save_model_product = true), (BUS.model.selected_model_product = item)" type="success"> show_save_model_product </el-button>
             <el-button size="small" @click="save_model_card()" type="primary" plain> save_model_card </el-button>
-            <el-button size="small" @click="delete_model_product(BUS.model.selected_model_product.id)" type="info"> delete_model_product </el-button>
+            <el-button size="small" @click="delete_ids_model_product(BUS.model.selected_model_product.id)" type="info"> delete_ids_model_product </el-button>
           </el-card>
         </li>
       </ul>
@@ -212,11 +212,12 @@ const form_save = $ref({
   is_texture: true, //是否有贴图
   is_plug_in: true, //是否插件
   is_plug_in_remark: '', //是否插件
+  list_wireframe :[], //线框图
 
   main_img: 'https://cdn.jsdelivr.net/gh/astmain/filestore@master/car.png', //主图
   list_img: [{ url: 'https://cdn.jsdelivr.net/gh/astmain/filestore@master/car.png', name: ''  ,size:100,size_format:'1MB'}], //图片
   // list_img: [], //图片
-  list_file: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '' }], //文件
+  list_file: [{ url: 'https://www.baidu.com/img/flexible/logo/pc/result.png', name: '',size:100,size_format:'1MB' }], //文件
   list_video: [], //视频
   list_extend: [], //扩展
   list_texture: [], //纹理
@@ -315,10 +316,10 @@ const save_model_card = async () => {
   }
 }
 
-const delete_model_product = async (id: number) => {
-  console.log('delete_model_product---id:', id)
-  const res: any = await axios_api.get(`/model_api/delete_model_product?id=${id}`)
-  console.log('delete_model_product---res:', res)
+const delete_ids_model_product = async (id: number) => {
+  console.log('delete_ids_model_product---id:', id)
+  const res: any = await axios_api.post(`/model_api/delete_ids_model_product`, {ids: [id]})
+  console.log('delete_ids_model_product---res:', res)
   if (res.code === 200) {
     ElMessage.success(res.msg)
     find_list_model_product()

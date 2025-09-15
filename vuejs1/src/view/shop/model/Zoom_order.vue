@@ -26,7 +26,7 @@
           <div>price_pay:{{ item.price_pay }}</div>
           <div>status:{{ item.status }}</div>
           <el-button size="small" @click=";(BUS.model.show_order_detail_modal = true), (BUS.model.selected_order = item)" type="primary"> show_order_detail_modal </el-button>
-          <el-button size="small" @click="delete_model_order(item.order_number)" type="info"> delete_model_order </el-button>
+          <el-button size="small" @click="delete_ids_model_order(item.order_number)" type="info"> delete_ids_model_order </el-button>
           <el-button size="small" @click="change_model_order_status(item.order_number)" type="info"> change_model_order_status </el-button>
         </el-card>
       </li>
@@ -82,9 +82,9 @@ export default {
       }
     },
 
-    async delete_model_order(order_number: string) {
-      const res: any = await axios_api.get(`/model_api/delete_model_order?order_number=${order_number}`)
-      console.log('delete_model_order---res:', res)
+    async delete_ids_model_order(order_number: string) {
+      const res: any = await axios_api.post(`/model_api/delete_ids_model_order`, {ids: [order_number]})
+      console.log('delete_ids_model_order---res:', res)
       if (res.code === 200) {
         ElMessage.success(res.msg)
         this.find_list_model_order()
