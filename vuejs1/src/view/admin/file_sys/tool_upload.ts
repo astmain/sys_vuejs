@@ -40,6 +40,7 @@ axios_instance.interceptors.request.use(
         //替换自己的token
         config.headers.token = localStorage.getItem('token')
         //封装时可以注释掉
+        // @ts-ignore
         config.url = localStorage.getItem('VITE_url_app_run') ? localStorage.getItem('VITE_url_app_run') + config.url : config.url
         return config
     },

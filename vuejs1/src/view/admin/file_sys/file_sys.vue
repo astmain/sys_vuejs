@@ -20,6 +20,7 @@
     <el-radio-button value="web_set" @click="">网站设置资源</el-radio-button>
     <el-radio-button value="depart" @click="">部门资源</el-radio-button>
     <el-radio-button value="public" @click="">公共资源</el-radio-button>
+    <el-radio-button value="parse3d" @click="">parse3d资源</el-radio-button>
 
     <!--    <el-radio-button value="user" @click="find_dir_tree()">用户资源</el-radio-button>-->
     <!--    <el-radio-button value="web_set" @click="find_dir_tree()">网站设置资源</el-radio-button>-->
