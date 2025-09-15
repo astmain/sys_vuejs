@@ -1,6 +1,5 @@
 <template>
   <!-- ✅文件列表工具栏 -->
-
   <el-form label-width="auto" label-position="left" style="max-width: 400px">
     <el-form-item label="token">
       <el-input v-model="BUS.token" placeholder="token"></el-input>
@@ -12,19 +11,12 @@
       </el-select>
     </el-form-item>
   </el-form>
-
   <el-button @click="得到token()">得到token</el-button>
-
   <el-radio-group v-model="path1" @change="find_dir_tree">
     <el-radio-button value="user" @click="">用户资源</el-radio-button>
     <el-radio-button value="web_set" @click="">网站设置资源</el-radio-button>
     <el-radio-button value="depart" @click="">部门资源</el-radio-button>
     <el-radio-button value="public" @click="">公共资源</el-radio-button>
-
-    <!--    <el-radio-button value="user" @click="find_dir_tree()">用户资源</el-radio-button>-->
-    <!--    <el-radio-button value="web_set" @click="find_dir_tree()">网站设置资源</el-radio-button>-->
-    <!--    <el-radio-button value="depart" @click="find_dir_tree()">部门资源</el-radio-button>-->
-    <!--    <el-radio-button value="public" @click="find_dir_tree()">公共资源</el-radio-button>-->
   </el-radio-group>
 
   <div>
@@ -91,7 +83,8 @@
   <pre>{{ tree_struct }}</pre>
 </template>
 <script lang="ts">
-import { tool_upload } from './tool_upload'
+import { tool_upload, axios_oss } from './tool_upload'
+import { ElMessage } from 'element-plus'
 import Menu1 from './Menu1.vue'
 import axios from 'axios'
 import { BUS } from '../../../BUS'
@@ -156,7 +149,7 @@ export default {
     },
 
     async find_dir_tree() {
-      const res: any = await axios_api.post('/oss_api/find_dir_tree', { path1: this.path1 })
+      const res: any = await axios_oss.post('/oss_api/find_dir_tree', { path1: this.path1 })
       console.log(`res:`, res)
       if (res.code === 200) {
         this.tree_depart.data = res.result
@@ -167,7 +160,7 @@ export default {
     },
 
     async find_dir_struct({ path_static }: { path_static: string }) {
-      const res: any = await axios_api.post('/oss_api/find_dir_struct', { path_static })
+      const res: any = await axios_oss.post('/oss_api/find_dir_struct', { path_static })
       console.log(`res:`, res)
       if (res.code === 200) {
         this.tree_struct = res.result
@@ -178,7 +171,7 @@ export default {
     },
 
     async static_rename({ id, name }: { id: number; name: string }) {
-      const res: any = await axios_api.post('/oss_api/static_rename', { id, name })
+      const res: any = await axios_oss.post('/oss_api/static_rename', { id, name })
       if (res.code === 200) {
         ElMessage.success(res.msg)
         this.find_dir_tree()
@@ -188,7 +181,7 @@ export default {
     },
 
     async static_delete_id(id: number) {
-      const res: any = await axios_api.post('/oss_api/static_delete_id', { id })
+      const res: any = await axios_oss.post('/oss_api/static_delete_id', { id })
       if (res.code === 200) {
         ElMessage.success(res.msg)
         this.find_dir_tree()
@@ -200,7 +193,7 @@ export default {
 
     async find_file_url(item: any) {
       console.log(`find_file_url:`, item)
-      const res: any = await axios_api.post('/oss_api/find_file_url', { id: item.id })
+      const res: any = await axios_oss.post('/oss_api/find_file_url', { id: item.id })
       if (res.code === 200) {
         console.log(`res:`, res.result)
         ElMessage.success(res.msg)
@@ -213,7 +206,7 @@ export default {
 
     async download_file(item: any) {
       console.log(`find_file_url:`, item)
-      const res: any = await axios_api.post('/oss_api/find_file_url', { id: item.id })
+      const res: any = await axios_oss.post('/oss_api/find_file_url', { id: item.id })
       if (res.code === 200) {
         console.log(`res:`, res.result)
         ElMessage.success(res.msg)
@@ -237,7 +230,7 @@ export default {
     },
 
     async static_create_dir({ name, path_static }: { name: string; path_static: string }) {
-      const res: any = await axios_api.post('/oss_api/static_create_dir', { name, path_static })
+      const res: any = await axios_oss.post('/oss_api/static_create_dir', { name, path_static })
       if (res.code === 200) {
         ElMessage.success(res.msg)
         this.find_dir_tree()
@@ -325,7 +318,7 @@ export default {
       }
     }
 
-    BUS.VITE_url_app_list = arr
+    BUS.VITE_url_app_list = arr as any[]
 
     console.log(`arr---`, arr)
     console.log(`VITE_url_ap_list---`, BUS.VITE_url_app_list)

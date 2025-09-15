@@ -17,6 +17,7 @@ export const useBUS = defineStore('BUS_defineStore', {
       { name: '3000', url: 'http://127.0.0.1:3000' },
       { name: '3001', url: 'http://127.0.0.1:3001' },
       { name: '8001', url: 'http://127.0.0.1:8001/api' },
+      { name: 'server.oss', url: 'https://server.oss.yun3d.com' },
     ],
   }),
   persist: [
